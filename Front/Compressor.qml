@@ -16,9 +16,35 @@ Item {
         }
 
         ButtonMaterial {
+            id: imageButton
             anchors.right: parent
             height: imageInput.height
             text: qsTr('Compress');
+
+            onClicked: {
+                if(!imageInput.text || imageInput.text.substring(0, 4) !== 'http') {
+                    log('TODO: url error')
+                    return
+               }
+
+                imageInput.enabled = false
+                imageButton.enabled = false
+                urlRequest.send()
+            }
+        }
+    }
+
+    NetworkRequest {
+        id: urlRequest
+        url: 'http://localhost:3000?url=' + imageInput.text
+
+        onLoaded(res): {
+            imageInput.text = ''
+            imageInput.enabled = true
+            imageButton.enabled = true
+
+            let result = JSON.parse(res)
+            log(result)
         }
     }
 
