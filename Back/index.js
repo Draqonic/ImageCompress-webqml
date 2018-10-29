@@ -2,6 +2,7 @@ const config = require('./config')
 const log = console.log
 
 const express = require('express')
+const cors = require('cors')
 const fs = require('fs')
 const url = require('url')
 const path = require('path')
@@ -32,6 +33,7 @@ function removeFile (fileUrl) {
 // TODO: make dirs if not exist
 
 const app = express()
+app.use(cors())
 
 app.get('/', (req, res) => {
   let url = req.query.url // TODO: check url
@@ -68,6 +70,10 @@ app.get('/', (req, res) => {
         }
       })
   })
+})
+
+app.get('/all', (req, res) => {
+  //
 })
 
 app.listen(config.appPort, () => log(`Started on port ${config.appPort}`))
