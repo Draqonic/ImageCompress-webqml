@@ -12,8 +12,10 @@
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.4",
+    "dateformat": "^3.0.3",
     "express": "^4.16.4",
     "image-downloader": "^3.4.1",
+    "mysql": "^2.16.0",
     "sha256": "^0.2.0",
     "sharp": "^0.21.0"
   },
