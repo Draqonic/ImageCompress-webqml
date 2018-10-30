@@ -4,14 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index",
+    "test": "node node_modules/standard/bin/cmd",
+    "fix": "node node_modules/standard/bin/cmd --fix"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.4",
-    "download-file": "^0.1.5",
     "express": "^4.16.4",
+    "image-downloader": "^3.4.1",
+    "sha256": "^0.2.0",
     "sharp": "^0.21.0"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
   }
 }
