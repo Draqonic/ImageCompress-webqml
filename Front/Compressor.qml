@@ -1,63 +1,15 @@
 Item { 
-    anchors.top: toolBar.bottom
-    anchors.bottom: parent.bottom
-    anchors.topMargin: 15
-    width: 100%
+    CompressInput {
+    }
+
 
     Row {
-        id: inputRow
-        anchors.horizontalCenter: parent
-        spacing: 10
-
-        TextInputMaterial {
-            id: imageInput
-            width: 300 // TODO: mobile!
-            placeholder.text: qsTr('Insert a link to image compression');
-        }
-
-        ButtonMaterial {
-            id: imageButton
-            anchors.right: parent
-            height: imageInput.height
-            text: qsTr('Compress');
-
-            onClicked: {
-                if(!imageInput.text || imageInput.text.substring(0, 4) !== 'http') {
-                    log('TODO: url error')
-                    return
-               }
-
-                imageInput.enabled = false
-                imageButton.enabled = false
-                urlRequest.send()
-            }
-        }
-    }
-
-    NetworkRequest {
-        id: urlRequest
-        url: 'http://localhost:3000?url=' + imageInput.text
-
-        onLoaded(res): {
-            imageInput.text = ''
-            imageInput.enabled = true
-            imageButton.enabled = true
-
-            let result = JSON.parse(res)
-            log(result)
-        }
-    }
-
-    Text {
-        text: 'Total image count: <b>' + imagesModel.count + '</b>'
-    }
-
-    Row {
-        id: filterRow
+        id: filters
         anchors.horizontalAlignment: parent
         anchors.top: inputRow.bottom
         anchors.topMargin: 30
         spacing: 3
+        property bool isSearch: filterName.text || filterSize.text || filterDate.text
 
         Text {
             text: 'Search:'
@@ -89,18 +41,36 @@ Item {
 
         TextInputMaterial {
             id: filterDate
+            enabled: false
         }
     }
 
     Text {
-        anchors.top: filterRow.bottom
-        text: '<b>' + proxyModel.count + '</b> matches'
-        visible: filterName.text || filterSize.text || filterDate
+        anchors.top: filters.bottom
+        text: '<b>' + imagesModel.count + '</b> images'
+                + (filters.isSearch ? ' | <b>' + proxyModel.count + '</b> matches' : '')
+    }
+
+    NetworkRequest {
+        id: imagesRequest
+        url: webApp.serverUrl + 'all'
+
+        onLoaded(res): {
+            log(this.url)
+
+            let result = JSON.parse(res)
+            log(result)
+            imagesModel.append(result)
+        }
+
+        onError(err): {
+            errorRect.visible = true
+        }
     }
 
     GridView {
         id: images
-        anchors.top: filterRow.bottom
+        anchors.top: filters.bottom
         anchors.topMargin: 15
         height: contentHeight
         width: 100%
@@ -108,9 +78,12 @@ Item {
         cellHeight: 200
         spacing: 5
 
-        delegate: Rectangle {
+        delegate: Image {
+            id: image
+            property string imageUrl: webApp.serverUrl + 'images/' + model.file // 'image?file=' + model.file
             width: 200; height: 200
-            color: model.url
+            fillMode: Image.PreserveAspectCrop
+            source: imageUrl
 
             HoverMixin {
                 id: hover
@@ -118,7 +91,8 @@ Item {
             
             MousePressMixin {
                 onPressedChanged: {
-                    if (value) console.log(value, model.url)
+                    if (value)
+						window.open(image.imageUrl, '_blank')
                 }
             }
 
@@ -133,8 +107,9 @@ Item {
                 Text {
                     anchors.fill: parent
                     anchors.margins: 10
-                    text: model.name + "</b><br><b>" + model.size + "</b> kb"
-                    font.bold: true        
+                    text: "<b>" + model.name + "</b><br><br><b>"
+                            + model.compress_size + "</b> MB<br>(original: <b>"
+                            + model.original_size + "</b> MB)"    
                     wrapMode: Text.WrapAnywhere
                     horizontalAlignment: Text.AlignHCenter
                 }
@@ -146,12 +121,8 @@ Item {
 		    target: ListModel {
                 id: imagesModel
                 onCompleted: {
-                    log('model')
-                    imagesModel.append({'url': 'lightgreen', name: 'Some image title', size: 500})
-                    for(let i = 0; i !== 50; ++i)
-                        imagesModel.append({'url': 'lightgreen', name: 'NameNameNameNameNameName' + i, size: 140 + i})
-                    log(imagesModel.count)
-                    proxyModel.setFilter(item => item.name.includes(filterName.text) && item.size > filterSize.text)
+                    imagesRequest.send()
+                    proxyModel.setFilter(item => item.name.includes(filterName.text) && item.compress_size >= filterSize.text)
                 }
             }
 
