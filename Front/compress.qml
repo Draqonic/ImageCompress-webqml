@@ -1,7 +1,7 @@
 MainItem {
     id: webApp
     title: qsTr('Image Compressor');
-    property string serverUrl: 'http://localhost:3000/'
+    property string serverUrl: 'https://dny.pp.ua/compress/'
 
     IToolBar {
     }

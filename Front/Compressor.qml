@@ -2,7 +2,6 @@ Item {
     CompressInput {
     }
 
-
     Row {
         id: filters
         anchors.horizontalAlignment: parent
@@ -71,7 +70,7 @@ Item {
     GridView {
         id: images
         anchors.top: filters.bottom
-        anchors.topMargin: 15
+        anchors.topMargin: 20
         height: contentHeight
         width: 100%
         cellWidth: 200
@@ -109,7 +108,7 @@ Item {
                     anchors.margins: 10
                     text: "<b>" + model.name + "</b><br><br><b>"
                             + model.compress_size + "</b> MB<br>(original: <b>"
-                            + model.original_size + "</b> MB)"    
+                            + model.original_size + "</b> MB)"
                     wrapMode: Text.WrapAnywhere
                     horizontalAlignment: Text.AlignHCenter
                 }
