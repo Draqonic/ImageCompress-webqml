@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "test": "node node_modules/standard/bin/cmd",
-    "fix": "node node_modules/standard/bin/cmd --fix"
+    "check": "node node_modules/standard/bin/cmd index.js Tools/tools.js config.js",
+    "fix": "node node_modules/standard/bin/cmd index.js Tools/tools.js config.js --fix"
   },
   "author": "",
   "license": "MIT",

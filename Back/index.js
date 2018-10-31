@@ -72,7 +72,6 @@ app.get('/add', (req, res) => {
               file: fileName + '.jpeg',
               time: compressDateFormat
             }
-            log('11111111111', imageUrl)
 
             const query = connection.query('INSERT INTO `image_list` SET ?', post, function (error, results, fields) {
               if (error) {
