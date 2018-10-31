@@ -95,7 +95,8 @@ GridView {
             onCompleted: {
                 imagesRequest.send()
                 proxyModel.setFilter(function(item) {
-                    return item.name.includes(filterName.text) && item.compress_size >= filterSize.text && item.time >= filters.filterDateTime
+                    return item.name.toUpperCase().includes(filterName.text.toUpperCase()) &&
+                           item.compress_size >= filterSize.text && item.time >= filters.filterDateTime
                 })
             }
         }
