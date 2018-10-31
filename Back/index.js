@@ -28,7 +28,6 @@ app.use('/images', express.static('images-compress'))
 app.get('/add', (req, res) => {
   let imageUrl = req.query.url
   let jpegQuality = Math.round(req.query.jpegQuality) || 20
-  let pngCompress = Math.round(req.query.pngCompress) || 9
   let imageName = Tools.detectName(imageUrl)
   let fileName = Tools.sha256(Date.now().toString())
   let compressFile = path.join(config.dirCompress, fileName + '.jpeg')
