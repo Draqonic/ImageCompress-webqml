@@ -13,7 +13,4 @@ config.mysql = {
   database: 'images'
 }
 
-config.mongodb = {
-}
-
 module.exports = config

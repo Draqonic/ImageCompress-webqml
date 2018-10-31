@@ -1,60 +1,24 @@
-const config = require('./config')
 const log = console.log
-
+const config = require('./config')
 const express = require('express')
 const cors = require('cors')
 
-const fs = require('fs')
 const path = require('path')
-const url = require('url')
 const download = require('image-downloader')
-const sha256 = require('sha256')
 const dateFormat = require('dateformat')
 
 const sharp = require('sharp')
 sharp.cache(false)
 
 const mysql = require('mysql')
-//config.mysql.dateStrings = true
 const connection = mysql.createConnection(config.mysql)
 connection.connect(err => err ? log(err) : log(`[MySQL] Connected`))
 
-// create images directory
-if (!fs.existsSync(config.dirTemp)) {
-  fs.mkdirSync(config.dirTemp)
-}
-if (!fs.existsSync(config.dirCompress)) {
-  fs.mkdirSync(config.dirCompress)
-}
+const Tools = require('./Tools/tools')
 
-// detect file name in url
-function detectName (imageUrl) {
-  let parsed = url.parse(imageUrl)
-  return path.basename(parsed.pathname)
-}
-
-function removeFile (fileUrl) {
-  log('[Remove file]', fileUrl)
-  const filePath = fileUrl
-  fs.access(filePath, err => {
-    if (!err) {
-      fs.unlink(filePath, function (err) {
-        if (err) {
-          console.log('rm', err)
-        }
-      })
-    } else {
-      console.log('rm', err)
-    }
-  })
-}
-
-function getFileSizeMb (filename) {
-  const stats = fs.statSync(filename)
-  const fileSizeInBytes = stats.size
-  const mb = (fileSizeInBytes / 1024000.0).toFixed(2)
-  return mb
-}
+// create directory if not exists
+Tools.createDir(config.dirTemp)
+Tools.createDir(config.dirCompress)
 
 const app = express()
 app.use(cors())
@@ -65,11 +29,15 @@ app.get('/add', (req, res) => {
   let imageUrl = req.query.url // TODO: check url
   let jpegQuality = Math.round(req.query.jpegQuality) || 20
   let pngCompress = Math.round(req.query.pngCompress) || 9
-  let imageName = detectName(imageUrl)
-  let fileName = sha256(Date.now().toString())
+  let imageName = Tools.detectName(imageUrl)
+  let fileName = Tools.sha256(Date.now().toString())
   let compressFile = path.join(config.dirCompress, fileName + '.jpeg')
   let imageSize = 0
   let compressSize = 0
+
+  if (jpegQuality < 1 || jpegQuality > 100) {
+    jpegQuality = 20
+  }
 
   const downloadOptions = {
     url: imageUrl,
@@ -81,39 +49,47 @@ app.get('/add', (req, res) => {
       let tempName = filename
 
       log(`[Saved] ${tempName}`)
-      imageSize = getFileSizeMb(tempName)
+      imageSize = Tools.getFileSizeMb(tempName)
 
       sharp(tempName)
         .jpeg({ quality: jpegQuality })
         .toFile(compressFile, err => {
           if (err) {
             log('[Convert error]', err)
-            removeFile(tempName)
+            Tools.removeFile(tempName)
             res.json({ result: false, error: 'Convert' })
           } else {
             let compressDate = new Date()
             let compressDateFormat = dateFormat(compressDate, 'yyyy-mm-dd HH:MM:ss')
-            compressSize = getFileSizeMb(compressFile)
-            removeFile(tempName)
+            compressSize = Tools.getFileSizeMb(compressFile)
+            Tools.removeFile(tempName)
 
             const post = {
-              name: imageName, original_size: imageSize, compress_size: compressSize,
-              file: fileName + '.jpeg', time: compressDateFormat
+              name: imageName,
+              original_size: imageSize,
+              original_url: imageUrl,
+              compress_size: compressSize,
+              file: fileName + '.jpeg',
+              time: compressDateFormat
             }
+            log('11111111111', imageUrl)
 
-            const query = connection.query('INSERT INTO image_list SET ?', post, function (error, results, fields) {
+            const query = connection.query('INSERT INTO `image_list` SET ?', post, function (error, results, fields) {
               if (error) {
                 log(`[SQL] ${error}`)
                 res.json({ result: false, error: 'SQL' })
               } else {
                 log(`[SQL] ${query.sql}`)
-                res.json({ result: true,
+
+                let result = {
+                  result: true,
                   date: compressDateFormat,
                   image: {
-                    original: { name: imageName, size: imageSize },
+                    original: { name: imageName, size: imageSize, url: imageUrl },
                     compress: { name: fileName + '.jpeg', size: compressSize, quality: jpegQuality }
                   }
-                })
+                }
+                res.json(result)
               }
             })
           }
@@ -128,11 +104,16 @@ app.get('/add', (req, res) => {
 })
 
 app.get('/all', (req, res) => {
-  connection.query('SELECT * FROM image_list', function (error, results, fields) {
+  connection.query('SELECT * FROM `image_list` ORDER BY `time` DESC', function (error, results, fields) {
     if (error) {
-      log(error) // throw error
-      res.json({ result: false })
+      res.json({ result: false, error: 'SQL' })
+      return
     }
+
+    for (const obj of results) {
+      obj.time = dateFormat(obj.time, 'yyyy-mm-dd HH:MM:ss')
+    }
+
     res.json(results)
   })
 })
