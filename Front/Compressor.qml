@@ -1,4 +1,4 @@
-Item { 
+Item {
     CompressInput {
     }
 
@@ -8,7 +8,7 @@ Item {
     Text {
         anchors.top: filters.bottom
         text: '<b>' + imagesModel.count + '</b> images'
-                + (filters.isSearch ? ' | <b>' + proxyModel.count + '</b> matches' : '')
+              + (filters.isSearch ? ' | <b>' + proxyModel.count + '</b> matches' : '')
     }
 
     Gallery {

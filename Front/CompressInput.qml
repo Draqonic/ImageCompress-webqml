@@ -2,7 +2,7 @@ Grid {
     id: compressInput
     property bool active
     width: webApp.mobile ? 300
-            : imageInput.width + imageButton.width + imageCompress.width + spacing * 2
+                         : imageInput.width + imageButton.width + imageCompress.width + spacing * 2
     anchors.horizontalCenter: parent
     spacing: 10
     property string format: 'jpg'
@@ -27,7 +27,7 @@ Grid {
         id: imageCompress
         enabled: !compressInput.active
         placeholder.text: compressInput.format === 'png' ? qsTr('Compress (9)')
-                                                            : qsTr('Quality (20)');
+                                                         : qsTr('Quality (20)');
     }
 
     ButtonMaterial {
@@ -60,10 +60,10 @@ Grid {
             if (result.error) {
                 let errorMessage
                 switch(result.error) {
-                    case 'Download': errorMessage = 'Incorrect image url'; break
-                    case 'SQL': errorMessage = 'Server error'; break
-                    case 'Convert': errorMessage = 'Incorrect image format'; break
-                    default: errorMessage = 'Unknown'; break
+                case 'Download': errorMessage = 'Incorrect image url'; break
+                case 'SQL': errorMessage = 'Server error'; break
+                case 'Convert': errorMessage = 'Incorrect image format'; break
+                default: errorMessage = 'Unknown'; break
                 }
 
                 compressErrorRect.errorText = errorMessage
@@ -73,8 +73,8 @@ Grid {
             }
 
             let imageNew = {name: result.image.original.name, original_size: result.image.original.size, original_url: result.image.original.url,
-                                file: result.image.compress.name, compress_size: result.image.compress.size, time: result.date }
-            
+                file: result.image.compress.name, compress_size: result.image.compress.size, time: result.date }
+
             imagesModel.insert(0, imageNew)
         }
 
