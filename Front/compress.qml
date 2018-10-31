@@ -1,7 +1,11 @@
 MainItem {
     id: webApp
     title: qsTr('Image Compressor');
-    property string serverUrl: 'https://dny.pp.ua/compress/'
+    property string serverUrl
+
+    constructor: {
+        this.serverUrl = window.location.href.includes('file') ? 'http://localhost:3000/' : './'
+    }
 
     IToolBar {
     }
@@ -18,5 +22,8 @@ MainItem {
         id: localStorage
     }
 
-    ErrorRect {}
+    ErrorRect {
+        anchors.fill: parent
+        fixed: true
+    }
 }
