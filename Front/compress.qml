@@ -10,12 +10,27 @@ MainItem {
     IToolBar {
     }
 
-    Compressor {
+    Item {
         anchors.top: toolBar.bottom
         anchors.bottom: parent.bottom
         anchors.topMargin: 15
         anchors.horizontalCenter: parent
         width: 97%
+
+        CompressInput {
+        }
+
+        Filters {
+        }
+
+        Text {
+            anchors.top: filters.bottom
+            text: '<b>' + imagesModel.count + '</b> images'
+                  + (filters.isSearch ? ' | <b>' + proxyModel.count + '</b> matches' : '')
+        }
+
+        Gallery {
+        }
     }
 
     LocalStorage {

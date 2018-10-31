@@ -62,7 +62,8 @@ Row {
         }
     }
     
-    Button {
+    AbstractButton {
+        height: filterTime.height
         text: 'Reset'
         
         onClicked: {
