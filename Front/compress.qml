@@ -33,10 +33,6 @@ MainItem {
         }
     }
 
-    LocalStorage {
-        id: localStorage
-    }
-
     ErrorRect {
         anchors.fill: parent
         fixed: true

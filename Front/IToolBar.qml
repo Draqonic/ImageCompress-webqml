@@ -15,11 +15,6 @@ Rectangle {
         anchors.centerIn: parent
         text: qsTr('Image Compressor');
         font.bold: true
-        //font.capitalization: Font.SmallCaps
         font.pixelSize: parent.height - 25
-    }
-
-    LanguageButton {
-        //text: qsTr('Русский');
     }
 }
