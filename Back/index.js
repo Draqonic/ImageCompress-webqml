@@ -26,7 +26,7 @@ app.use('/', express.static('web'))
 app.use('/images', express.static('images-compress'))
 
 app.get('/add', (req, res) => {
-  let imageUrl = req.query.url // TODO: check url
+  let imageUrl = req.query.url
   let jpegQuality = Math.round(req.query.jpegQuality) || 20
   let pngCompress = Math.round(req.query.pngCompress) || 9
   let imageName = Tools.detectName(imageUrl)
@@ -41,12 +41,18 @@ app.get('/add', (req, res) => {
 
   const downloadOptions = {
     url: imageUrl,
-    dest: path.join(config.dirTemp, fileName + '.jpeg')
+    dest: path.join(config.dirTemp)
   }
 
   download.image(downloadOptions)
     .then(({ filename, image }) => {
       let tempName = filename
+      let extName = path.extname(tempName)
+
+      if (!['.jpg', '.jpeg', '.png', '.webp'].includes(extName)) {
+        res.json({ result: false, error: 'Convert' })
+        return
+      }
 
       log(`[Saved] ${tempName}`)
       imageSize = Tools.getFileSizeMb(tempName)
@@ -98,8 +104,6 @@ app.get('/add', (req, res) => {
       console.error('[Download Error]\n', err)
       res.json({ result: false, error: 'Download' })
     })
-
-  // TODO: png .png({ compressionLevel: * })
 })
 
 app.get('/all', (req, res) => {

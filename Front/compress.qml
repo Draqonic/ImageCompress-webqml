@@ -19,6 +19,9 @@ MainItem {
 
         CompressInput {
         }
+		
+		CompressError {
+		}
 
         Filters {
         }

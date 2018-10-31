@@ -26,8 +26,8 @@ Grid {
     TextInputMaterial {
         id: imageCompress
         enabled: !compressInput.active
-        placeholder.text: compressInput.format === 'png' ? qsTr('Compress (9)')
-                                                         : qsTr('Quality (20)');
+        placeholder.text: /* compressInput.format === 'png' ? qsTr('Compress (9)') // TODO: png
+                                                         : */ qsTr('Quality (20)');
     }
 
     ButtonMaterial {
