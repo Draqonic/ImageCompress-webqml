@@ -4,8 +4,8 @@ GridView {
     anchors.topMargin: 20
     height: contentHeight
     width: 100%
-    cellWidth: 250
-    cellHeight: 250
+    cellWidth: !webApp.mobile ? 250 : webApp.width * 0.9 
+    cellHeight: cellWidth
     spacing: 5
 
     NetworkRequest {
@@ -27,7 +27,7 @@ GridView {
     delegate: Image {
         id: image
         property string imageUrl: webApp.serverUrl + 'images/' + model.file // 'image?file=' + model.file
-        width: 250; height: 250
+        width: parent.cellHeight; height: parent.cellHeight
         fillMode: Image.PreserveAspectCrop
         source: imageUrl
 

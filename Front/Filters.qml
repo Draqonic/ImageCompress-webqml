@@ -1,9 +1,10 @@
-Row {
+Grid {
     id: filters
     anchors.horizontalAlignment: parent
     anchors.top: compressInput.bottom
     anchors.topMargin: 30
-    spacing: 3
+    width: 100%
+    spacing: 5
     property bool isSearch: filterName.text || filterSize.text || filterDate.value || filterTime.value
     
     Text {
@@ -37,10 +38,10 @@ Row {
     property string filterDateTime
     
     function resetDate() {
+        if (!filterDate.value) filters.filterDateTime = ''
         let searchDate = filterDate.value
         let searchTime = filterTime.value ? filterTime.value : '00:00'
         filters.filterDateTime = searchDate + ' ' + searchTime
-        log('Date', filters.filterDateTime)
     }
     
     DateInput {
@@ -72,7 +73,8 @@ Row {
             filterDate.element.dom.value = ''
             filterTime.element.dom.value = ''
             filterDate.value = ''
-            filterTime.value = ''  
+            filterTime.value = ''
+            proxyModel._buildIndexMap()
         }
     }
 }
