@@ -25,6 +25,7 @@ if (!_globals.web) /** @const */ _globals.web = {}
 if (!_globals.controls) /** @const */ _globals.controls = {}
 if (!_globals.controls.core) /** @const */ _globals.controls.core = {}
 if (!_globals.controls.experiment) /** @const */ _globals.controls.experiment = {}
+if (!_globals.controls.web) /** @const */ _globals.controls.web = {}
 if (!_globals.controls.pure) /** @const */ _globals.controls.pure = {}
 if (!_globals.controls.input) /** @const */ _globals.controls.input = {}
 if (!_globals.video) /** @const */ _globals.video = {}
@@ -1873,6 +1874,238 @@ var _this$child0 = new _globals.core.Timer($this)
 }
 
 
+//=====[component controls.input.BaseInput]=====================
+
+	var BaseInputBaseComponent = _globals.core.Item
+	var BaseInputBasePrototype = BaseInputBaseComponent.prototype
+
+/**
+ * @constructor
+ * @extends {_globals.core.Item}
+ */
+	var BaseInputComponent = _globals.controls.input.BaseInput = function(parent, row) {
+		BaseInputBaseComponent.apply(this, arguments)
+	//custom constructor:
+	{
+		this._placeholderClass = ''
+		this.element.on("focus", function() { this.forceActiveFocus(); }.bind(this))
+		this.element.on("blur", function() { this.forceActiveFocus(); }.bind(this))
+	}
+
+	}
+	var BaseInputPrototype = BaseInputComponent.prototype = Object.create(BaseInputBasePrototype)
+
+	BaseInputPrototype.constructor = BaseInputComponent
+
+	BaseInputPrototype.componentName = 'controls.input.BaseInput'
+	BaseInputPrototype.fontChanged = _globals.core.createSignal('fontChanged')
+	core.addProperty(BaseInputPrototype, 'Paddings', 'paddings')
+	core.addProperty(BaseInputPrototype, 'Color', 'color', ("#000"))
+	core.addProperty(BaseInputPrototype, 'Color', 'backgroundColor', ("#fff"))
+	core.addLazyProperty(BaseInputPrototype, 'font', (function(__parent, __row) {
+		var lazy$font = new _globals.core.Font(__parent, __row)
+		var $c = { lazy$font : lazy$font }
+
+//creating component Font
+			lazy$font.$c($c.$c$lazy$font = { })
+
+
+//setting up component Font
+			var lazy$font = $c.lazy$font
+			lazy$font.$s($c.$c$lazy$font)
+			delete $c.$c$lazy$font
+
+
+
+		return lazy$font
+}))
+	core.addProperty(BaseInputPrototype, 'Border', 'border')
+	core.addProperty(BaseInputPrototype, 'string', 'type', ("text"))
+	core.addProperty(BaseInputPrototype, 'PlaceHolder', 'placeholder')
+	core.addProperty(BaseInputPrototype, 'bool', 'enabled', (true))
+/** @const @type {number} */
+	BaseInputPrototype.AlignLeft = 0
+/** @const @type {number} */
+	BaseInputComponent.AlignLeft = 0
+/** @const @type {number} */
+	BaseInputPrototype.AlignRight = 1
+/** @const @type {number} */
+	BaseInputComponent.AlignRight = 1
+/** @const @type {number} */
+	BaseInputPrototype.AlignHCenter = 2
+/** @const @type {number} */
+	BaseInputComponent.AlignHCenter = 2
+/** @const @type {number} */
+	BaseInputPrototype.Justify = 3
+/** @const @type {number} */
+	BaseInputComponent.Justify = 3
+	core.addProperty(BaseInputPrototype, 'enum', 'horizontalAlignment')
+	BaseInputPrototype._updateSize = function() {
+		var style = { width: this.width, height: this.height }
+		this.style(style)
+	}
+	BaseInputPrototype.focusBrowser = function() {
+	var focusTimer = this._get('focusTimer', true)
+
+		focusTimer.restart()
+	}
+	BaseInputPrototype.blurBrowser = function() {
+	var focusTimer = this._get('focusTimer', true)
+
+		focusTimer.stop()
+		this.element.dom.blur()
+	}
+	BaseInputPrototype.getTag = function() { return 'input' }
+	BaseInputPrototype.registerStyle = function(style) {
+		style.addRule('input', "position: absolute; visibility: inherit; border-style: solid; border-width: 0px; box-sizing: border-box;")
+		style.addRule('input:focus', "outline: none;")
+	}
+	_globals.core._protoOnChanged(BaseInputPrototype, 'recursiveVisible', function(value) {
+		if (!value)
+			this.blurBrowser()
+	})
+	_globals.core._protoOnChanged(BaseInputPrototype, 'activeFocus', function(value) {
+		if (value)
+			this.focusBrowser()
+		else
+			this.blurBrowser()
+	})
+	_globals.core._protoOnChanged(BaseInputPrototype, 'horizontalAlignment', function(value) {
+		switch(value) {
+		case this.AlignLeft:	this.style('text-align', 'left'); break
+		case this.AlignRight:	this.style('text-align', 'right'); break
+		case this.AlignHCenter:	this.style('text-align', 'center'); break
+		case this.AlignJustify:	this.style('text-align', 'justify'); break
+		}
+	})
+	_globals.core._protoOnChanged(BaseInputPrototype, 'enabled', function(value) {
+		this.element.dom.disabled = !value
+	})
+	var $code$0 = function(value) { this._updateSize() }
+	_globals.core._protoOnChanged(BaseInputPrototype, 'height', $code$0)
+	_globals.core._protoOnChanged(BaseInputPrototype, 'width', $code$0)
+	_globals.core._protoOnChanged(BaseInputPrototype, 'type', function(value) { this.element.dom.type = value })
+	_globals.core._protoOnChanged(BaseInputPrototype, 'backgroundColor', function(value) { this.style('background', value) })
+	_globals.core._protoOnChanged(BaseInputPrototype, 'color', function(value) { this.style('color', value) })
+
+	BaseInputPrototype.$c = function($c) {
+		var $this = this;
+		BaseInputBasePrototype.$c.call(this, $c.$b = { })
+var _this$child0 = new _globals.core.Timer($this)
+		$c._this$child0 = _this$child0
+
+//creating component Timer
+		_this$child0.$c($c.$c$_this$child0 = { })
+		_this$child0._setId('focusTimer')
+		$this.addChild(_this$child0)
+//creating component controls.input.<anonymous>
+		var _this$placeholder = new _globals.controls.core.PlaceHolder($this)
+		$c._this$placeholder = _this$placeholder
+
+//creating component PlaceHolder
+		_this$placeholder.$c($c.$c$_this$placeholder = { })
+
+		$this.placeholder = _this$placeholder
+//creating component controls.input.<anonymous>
+		var _this$border = new _globals.core.Border($this)
+		$c._this$border = _this$border
+
+//creating component Border
+		_this$border.$c($c.$c$_this$border = { })
+
+		$this.border = _this$border
+//creating component controls.input.<anonymous>
+		var _this$paddings = new _globals.controls.core.Paddings($this)
+		$c._this$paddings = _this$paddings
+
+//creating component Paddings
+		_this$paddings.$c($c.$c$_this$paddings = { })
+
+		$this.paddings = _this$paddings
+	}
+	BaseInputPrototype.$s = function($c) {
+		var $this = this;
+	BaseInputBasePrototype.$s.call(this, $c.$b); delete $c.$b
+//setting up component PlaceHolder
+			var _this$placeholder = $c._this$placeholder
+			_this$placeholder.$s($c.$c$_this$placeholder)
+			delete $c.$c$_this$placeholder
+
+
+
+//setting up component Border
+			var _this$border = $c._this$border
+			_this$border.$s($c.$c$_this$border)
+			delete $c.$c$_this$border
+
+
+
+//setting up component Paddings
+			var _this$paddings = $c._this$paddings
+			_this$paddings.$s($c.$c$_this$paddings)
+			delete $c.$c$_this$paddings
+
+
+
+//setting up component Timer
+			var _this$child0 = $c._this$child0
+			_this$child0.$s($c.$c$_this$child0)
+			delete $c.$c$_this$child0
+
+//assigning interval to (100)
+			_this$child0._removeUpdater('interval'); _this$child0.interval = (100);
+			_this$child0.on('triggered', function() {
+			this.parent.element.dom.focus()
+			this.parent.element.dom.select()
+		}.bind(_this$child0))
+}
+
+
+//=====[component controls.input.DateInput]=====================
+
+	var DateInputBaseComponent = _globals.controls.input.BaseInput
+	var DateInputBasePrototype = DateInputBaseComponent.prototype
+
+/**
+ * @constructor
+ * @extends {_globals.controls.input.BaseInput}
+ */
+	var DateInputComponent = _globals.controls.input.DateInput = function(parent, row) {
+		DateInputBaseComponent.apply(this, arguments)
+	//custom constructor:
+	{
+		this.element.on("change", function() { this.value = this.element.dom.value }.bind(this))
+	}
+
+	}
+	var DateInputPrototype = DateInputComponent.prototype = Object.create(DateInputBasePrototype)
+
+	DateInputPrototype.constructor = DateInputComponent
+
+	DateInputPrototype.componentName = 'controls.input.DateInput'
+	core.addProperty(DateInputPrototype, 'string', 'max')
+	core.addProperty(DateInputPrototype, 'string', 'min')
+	core.addProperty(DateInputPrototype, 'string', 'value')
+	_globals.core._protoOnChanged(DateInputPrototype, 'max', function(value) { this.element.dom.max = value; })
+	_globals.core._protoOnChanged(DateInputPrototype, 'min', function(value) { this.element.dom.min = value; })
+
+	DateInputPrototype.$c = function($c) {
+		var $this = this;
+		DateInputBasePrototype.$c.call(this, $c.$b = { })
+
+	}
+	DateInputPrototype.$s = function($c) {
+		var $this = this;
+	DateInputBasePrototype.$s.call(this, $c.$b); delete $c.$b
+//assigning width to (150)
+			$this._removeUpdater('width'); $this.width = (150);
+//assigning type to ("date")
+			$this._removeUpdater('type'); $this.type = ("date");
+//assigning height to (20)
+			$this._removeUpdater('height'); $this.height = (20);
+}
+
+
 //=====[component core.BaseLayout]=====================
 
 	var BaseLayoutBaseComponent = _globals.core.Item
@@ -2047,6 +2280,1056 @@ this._scheduleLayout() }
 			$this._removeUpdater('handleNavigationKeys'); $this.handleNavigationKeys = (true);
 //assigning height to (${contentHeight})
 			$this._replaceUpdater('height', function() { $this.height = ($this.contentHeight) }, [$this,'contentHeight'])
+}
+
+
+//=====[component core.Column]=====================
+
+	var ColumnBaseComponent = _globals.core.Layout
+	var ColumnBasePrototype = ColumnBaseComponent.prototype
+
+/**
+ * @constructor
+ * @extends {_globals.core.Layout}
+ */
+	var ColumnComponent = _globals.core.Column = function(parent, row) {
+		ColumnBaseComponent.apply(this, arguments)
+
+	}
+	var ColumnPrototype = ColumnComponent.prototype = Object.create(ColumnBasePrototype)
+
+	ColumnPrototype.constructor = ColumnComponent
+
+	ColumnPrototype.componentName = 'core.Column'
+	ColumnPrototype._layout = function() {
+		if (!this.recursiveVisible && !this.offlineLayout)
+			return
+
+		var children = this.children;
+		var p = 0
+		var w = 0
+		this.count = children.length
+		for(var i = 0; i < children.length; ++i) {
+			var c = children[i]
+			if (!('height' in c))
+				continue
+
+			var tm = c.anchors.topMargin || c.anchors.margins
+			var bm = c.anchors.bottomMargin || c.anchors.margins
+
+			var r = c.x + c.width
+			if (r > w)
+				w = r
+			c.viewY = p + tm
+			if (c.recursiveVisible)
+				p += c.height + tm + bm + this.spacing
+		}
+		if (p > 0)
+			p -= this.spacing
+		this.contentWidth = w
+		this.contentHeight = p
+	}
+	ColumnPrototype.addChild = function(child) {
+		_globals.core.Item.prototype.addChild.apply(this, arguments)
+
+		if (!('height' in child))
+			return
+
+		child.onChanged('height', this._scheduleLayout.bind(this))
+		child.onChanged('recursiveVisible', this._scheduleLayout.bind(this))
+		child.anchors.on('marginsUpdated', this._scheduleLayout.bind(this))
+	}
+	_globals.core._protoOnKey(ColumnPrototype, 'Key', function(key,event) {
+		if (!this.handleNavigationKeys)
+			return false;
+
+		switch (key) {
+			case 'Up':		return this.focusPrevChild()
+			case 'Down':	return this.focusNextChild()
+		}
+	})
+
+//=====[component core.BaseView]=====================
+
+	var BaseViewBaseComponent = _globals.core.BaseLayout
+	var BaseViewBasePrototype = BaseViewBaseComponent.prototype
+
+/**
+ * @constructor
+ * @extends {_globals.core.BaseLayout}
+ */
+	var BaseViewComponent = _globals.core.BaseView = function(parent, row) {
+		BaseViewBaseComponent.apply(this, arguments)
+	//custom constructor:
+	{
+		this._items = []
+		this._modelUpdate = new _globals.core.model.ModelUpdate()
+		this._attached = null
+
+		//callback instances for dynamic model subscriptions
+		this._modelReset = this._onReset.bind(this)
+		this._modelRowsInserted = this._onRowsInserted.bind(this)
+		this._modelRowsChanged = this._onRowsChanged.bind(this)
+		this._modelRowsRemoved =  this._onRowsRemoved.bind(this)
+	}
+
+	}
+	var BaseViewPrototype = BaseViewComponent.prototype = Object.create(BaseViewBasePrototype)
+
+	BaseViewPrototype.constructor = BaseViewComponent
+
+	BaseViewPrototype.componentName = 'core.BaseView'
+	BaseViewPrototype.layoutFinished = _globals.core.createSignal('layoutFinished')
+	core.addProperty(BaseViewPrototype, 'Object', 'model')
+	core.addProperty(BaseViewPrototype, 'Item', 'delegate')
+	core.addProperty(BaseViewPrototype, 'int', 'contentX')
+	core.addProperty(BaseViewPrototype, 'int', 'contentY')
+	core.addProperty(BaseViewPrototype, 'int', 'scrollingStep', (0))
+	core.addProperty(BaseViewPrototype, 'int', 'animationDuration', (0))
+	core.addProperty(BaseViewPrototype, 'string', 'animationEasing', ("ease"))
+	core.addProperty(BaseViewPrototype, 'bool', 'contentFollowsCurrentItem', (true))
+	core.addProperty(BaseViewPrototype, 'bool', 'nativeScrolling')
+	core.addProperty(BaseViewPrototype, 'real', 'prerender', (0.5))
+	core.addProperty(BaseViewPrototype, 'string', 'visibilityProperty')
+	core.addProperty(BaseViewPrototype, 'BaseViewContent', 'content')
+/** @const @type {number} */
+	BaseViewPrototype.Contain = 0
+/** @const @type {number} */
+	BaseViewComponent.Contain = 0
+/** @const @type {number} */
+	BaseViewPrototype.Beginning = 1
+/** @const @type {number} */
+	BaseViewComponent.Beginning = 1
+/** @const @type {number} */
+	BaseViewPrototype.Center = 2
+/** @const @type {number} */
+	BaseViewComponent.Center = 2
+/** @const @type {number} */
+	BaseViewPrototype.End = 3
+/** @const @type {number} */
+	BaseViewComponent.End = 3
+/** @const @type {number} */
+	BaseViewPrototype.Visible = 4
+/** @const @type {number} */
+	BaseViewComponent.Visible = 4
+/** @const @type {number} */
+	BaseViewPrototype.Page = 5
+/** @const @type {number} */
+	BaseViewComponent.Page = 5
+	core.addProperty(BaseViewPrototype, 'enum', 'positionMode')
+	BaseViewPrototype.discard = function() {
+		this._detach()
+		_globals.core.BaseLayout.prototype.discard.apply(this)
+	}
+	BaseViewPrototype._processUpdates = function() {
+		this._modelUpdate.apply(this)
+		qml.core.BaseLayout.prototype._processUpdates.apply(this)
+		this.count = this._items.length
+	}
+	BaseViewPrototype.focusCurrent = function() {
+		var n = this.count
+		if (n == 0)
+			return
+
+		var idx = this.currentIndex
+		if (idx < 0 || idx >= n) {
+			if (this.keyNavigationWraps)
+				this.currentIndex = (idx + n) % n
+			else
+				this.currentIndex = idx < 0? 0: n - 1
+			return
+		}
+		var item = this._items[idx]
+
+		if (item)
+			this.focusChild(item)
+		if (this.contentFollowsCurrentItem)
+			this.positionViewAtIndex(idx)
+	}
+	BaseViewPrototype._attach = function() {
+	var model = this._get('model', true)
+
+		if (this._attached || !this.model || !this.delegate)
+			return
+
+		if (this.trace)
+			log('attaching model...')
+
+		var Model = _globals.core.Model
+		var model = this.model
+		var modelType = typeof model
+
+		if ((Model !== undefined) && (model instanceof Model)) {
+		} else if (Array.isArray(model)) {
+			model = new _globals.core.model.ArrayModelWrapper(model)
+		} else if (modelType === 'number') {
+			var data = []
+			for(var i = 0; i < model; ++i)
+				data.push({})
+			model = new _globals.core.model.ArrayModelWrapper(data)
+		} else
+			throw new Error("unknown value of type '" + (typeof model) + "', attached to model property: " + model + ((modelType === 'object') && ('componentName' in model)? ', component name: ' + model.componentName: ''))
+
+		model.on('reset', this._modelReset)
+		model.on('rowsInserted', this._modelRowsInserted)
+		model.on('rowsChanged', this._modelRowsChanged)
+		model.on('rowsRemoved', this._modelRowsRemoved)
+
+		this._attached = model
+		this._onReset()
+	}
+	BaseViewPrototype._detach = function() {
+	var model = this._get('model', true)
+
+		var model = this._attached
+		if (!model)
+			return
+
+		if (this.trace)
+			log('detaching model...')
+
+		this._attached = null
+
+		model.removeListener('reset', this._modelReset)
+		model.removeListener('rowsInserted', this._modelRowsInserted)
+		model.removeListener('rowsChanged', this._modelRowsChanged)
+		model.removeListener('rowsRemoved', this._modelRowsRemoved)
+	}
+	BaseViewPrototype._onReset = function() {
+	var model = this._get('model', true)
+
+		var model = this._attached
+		if (this.trace)
+			log("reset", this._items.length, model.count)
+
+		this._modelUpdate.reset(model)
+		this._scheduleLayout()
+	}
+	BaseViewPrototype.__complete = function() { BaseViewBasePrototype.__complete.call(this)
+var self = this
+		this.element.on('scroll', function(event) {
+			self._updateScrollPositions(self.element.dom.scrollLeft, self.element.dom.scrollTop)
+		}.bind(this)) }
+	BaseViewPrototype._updateItems = function(begin,end) {
+		for(var i = begin; i < end; ++i)
+			this._updateDelegate(i)
+	}
+	BaseViewPrototype._onRowsChanged = function(begin,end) {
+		if (this.trace)
+			log("rows changed", begin, end)
+
+		this._modelUpdate.update(this._attached, begin, end)
+		this._scheduleLayout()
+	}
+	BaseViewPrototype._onRowsInserted = function(begin,end) {
+		if (this.trace)
+			log("rows inserted", begin, end)
+
+		this._modelUpdate.insert(this._attached, begin, end)
+		this._scheduleLayout()
+	}
+	BaseViewPrototype._onRowsRemoved = function(begin,end) {
+		if (this.trace)
+			log("rows removed", begin, end)
+
+		this._modelUpdate.remove(this._attached, begin, end)
+		this._scheduleLayout()
+	}
+	BaseViewPrototype._removeItems = function(begin,end) {
+		var deleted = this._items.splice(begin, end - begin)
+		var view = this
+		deleted.forEach(function(item) { view._discardItem(item)})
+	}
+	BaseViewPrototype._insertItems = function(begin,end) {
+		var n = end - begin + 2
+		var args = new Array(n)
+		args[0] = begin
+		args[1] = 0
+		for(var i = 2; i < n; ++i)
+			args[i] = null
+		Array.prototype.splice.apply(this._items, args)
+	}
+	BaseViewPrototype._updateDelegateIndex = function(idx) {
+		var item = this._items[idx]
+		if (item) {
+			item._local.model.index = idx
+			var _rowIndex = item._createPropertyStorage('_rowIndex')
+			_rowIndex.callOnChanged(item, '_rowIndex')
+		}
+	}
+	BaseViewPrototype._updateDelegate = function(idx) {
+		var item = this._items[idx]
+		if (item) {
+			var row = this._attached.get(idx)
+			row.index = idx
+			item._local.model = row
+			var _row = item._createPropertyStorage('_row')
+			_row.callOnChanged(item, '_row')
+		}
+	}
+	BaseViewPrototype._createDelegate = function(idx) {
+		var items = this._items
+		var item = items[idx]
+		if (item !== null && item !== undefined)
+			return item
+
+		var visibilityProperty = this.visibilityProperty
+		var row = this._attached.get(idx)
+
+		if (this.trace)
+			log('createDelegate', idx, row)
+
+		if (visibilityProperty && !row[visibilityProperty])
+			return null;
+		row.index = idx
+
+		item = this.delegate(this, row)
+		items[idx] = item
+		item.view = this
+		item.element.remove()
+		this.content.element.append(item.element)
+
+		item.recursiveVisible = this.recursiveVisible && item.visible && item.visibleInView
+
+		return item
+	}
+	BaseViewPrototype._discardItem = function(item) {
+		if (item === null)
+			return
+		if (this.focusedChild === item)
+			this.focusedChild = null;
+		item.discard()
+	}
+	BaseViewPrototype.itemAt = function(x,y) {
+		var idx = this.indexAt(x, y)
+		return idx >= 0? this._items[idx]: null
+	}
+	BaseViewPrototype._updateScrollPositions = function(x,y,layout) {
+		this._setProperty('contentX', x)
+		this._setProperty('contentY', y)
+		this.content._updateScrollPositions(x, y, layout)
+	}
+	_globals.core._protoOnChanged(BaseViewPrototype, 'model', function(value) {
+		if (this.trace)
+			log('model changed to ', value)
+
+		this._detach()
+		this._modelUpdate.clear()
+		this._removeItems(0, this.count)
+		this.count = 0
+		this._scheduleLayout()
+	})
+	_globals.core._protoOnChanged(BaseViewPrototype, 'recursiveVisible', function(value) {
+		if (value)
+			this._scheduleLayout();
+
+		var view = this
+		this._items.forEach(function(child) {
+			if (child !== null)
+				view._updateVisibilityForChild(child, value)
+		})
+		this._updateVisibilityForChild(this.content, value)
+	})
+	_globals.core._protoOnChanged(BaseViewPrototype, 'delegate', function(value) {
+		if (value)
+			value.visible = false
+	})
+	_globals.core._protoOnChanged(BaseViewPrototype, 'currentIndex', function(value) {
+		this.focusCurrent()
+	})
+	_globals.core._protoOnChanged(BaseViewPrototype, 'focusedChild', function(value) {
+		var idx = this._items.indexOf(this.focusedChild)
+		if (idx >= 0)
+			this.currentIndex = idx
+	})
+	var $code$0 = function(value) { this._scheduleLayout() }
+	_globals.core._protoOnChanged(BaseViewPrototype, 'height', $code$0)
+	_globals.core._protoOnChanged(BaseViewPrototype, 'width', $code$0)
+	_globals.core._protoOnChanged(BaseViewPrototype, 'contentX', function(value) { this.content.x = -value; })
+	_globals.core._protoOnChanged(BaseViewPrototype, 'contentY', function(value) { this.content.y = -value; })
+
+	BaseViewPrototype.$c = function($c) {
+		var $this = this;
+		BaseViewBasePrototype.$c.call(this, $c.$b = { })
+//creating component core.<anonymous>
+		var _this$content = new _globals.core.BaseViewContent($this)
+		$c._this$content = _this$content
+
+//creating component BaseViewContent
+		_this$content.$c($c.$c$_this$content = { })
+
+		$this.content = _this$content
+//creating component core.<anonymous>
+		var _this$model = new _globals.core.ListModel($this)
+		$c._this$model = _this$model
+
+//creating component ListModel
+		_this$model.$c($c.$c$_this$model = { })
+
+		$this.model = _this$model
+	}
+	BaseViewPrototype.$s = function($c) {
+		var $this = this;
+	BaseViewBasePrototype.$s.call(this, $c.$b); delete $c.$b
+//assigning keyNavigationWraps to (true)
+			$this._removeUpdater('keyNavigationWraps'); $this.keyNavigationWraps = (true);
+
+//setting up component BaseViewContent
+			var _this$content = $c._this$content
+			_this$content.$s($c.$c$_this$content)
+			delete $c.$c$_this$content
+
+	var behavior__this_content_on_y = new _globals.core.Animation(_this$content)
+	var behavior__this_content_on_y$c = { behavior__this_content_on_y: behavior__this_content_on_y }
+
+//creating component Animation
+	behavior__this_content_on_y.$c(behavior__this_content_on_y$c.$c$behavior__this_content_on_y = { })
+
+
+//setting up component Animation
+	var behavior__this_content_on_y = behavior__this_content_on_y$c.behavior__this_content_on_y
+	behavior__this_content_on_y.$s(behavior__this_content_on_y$c.$c$behavior__this_content_on_y)
+	delete behavior__this_content_on_y$c.$c$behavior__this_content_on_y
+
+//assigning duration to (${parent.parent.animationDuration})
+	behavior__this_content_on_y._replaceUpdater('duration', function() { behavior__this_content_on_y.duration = (behavior__this_content_on_y.parent.parent.animationDuration) }, [behavior__this_content_on_y.parent.parent,'animationDuration'])
+//assigning easing to (${parent.parent.animationEasing})
+	behavior__this_content_on_y._replaceUpdater('easing', function() { behavior__this_content_on_y.easing = (behavior__this_content_on_y.parent.parent.animationEasing) }, [behavior__this_content_on_y.parent.parent,'animationEasing'])
+
+	_this$content.setAnimation('y', behavior__this_content_on_y);
+
+	var behavior__this_content_on_x = new _globals.core.Animation(_this$content)
+	var behavior__this_content_on_x$c = { behavior__this_content_on_x: behavior__this_content_on_x }
+
+//creating component Animation
+	behavior__this_content_on_x.$c(behavior__this_content_on_x$c.$c$behavior__this_content_on_x = { })
+
+
+//setting up component Animation
+	var behavior__this_content_on_x = behavior__this_content_on_x$c.behavior__this_content_on_x
+	behavior__this_content_on_x.$s(behavior__this_content_on_x$c.$c$behavior__this_content_on_x)
+	delete behavior__this_content_on_x$c.$c$behavior__this_content_on_x
+
+//assigning duration to (${parent.parent.animationDuration})
+	behavior__this_content_on_x._replaceUpdater('duration', function() { behavior__this_content_on_x.duration = (behavior__this_content_on_x.parent.parent.animationDuration) }, [behavior__this_content_on_x.parent.parent,'animationDuration'])
+//assigning easing to (${parent.parent.animationEasing})
+	behavior__this_content_on_x._replaceUpdater('easing', function() { behavior__this_content_on_x.easing = (behavior__this_content_on_x.parent.parent.animationEasing) }, [behavior__this_content_on_x.parent.parent,'animationEasing'])
+
+	_this$content.setAnimation('x', behavior__this_content_on_x);
+
+	var behavior__this_content_on_transform = new _globals.core.Animation(_this$content)
+	var behavior__this_content_on_transform$c = { behavior__this_content_on_transform: behavior__this_content_on_transform }
+
+//creating component Animation
+	behavior__this_content_on_transform.$c(behavior__this_content_on_transform$c.$c$behavior__this_content_on_transform = { })
+
+
+//setting up component Animation
+	var behavior__this_content_on_transform = behavior__this_content_on_transform$c.behavior__this_content_on_transform
+	behavior__this_content_on_transform.$s(behavior__this_content_on_transform$c.$c$behavior__this_content_on_transform)
+	delete behavior__this_content_on_transform$c.$c$behavior__this_content_on_transform
+
+//assigning duration to (${parent.parent.animationDuration})
+	behavior__this_content_on_transform._replaceUpdater('duration', function() { behavior__this_content_on_transform.duration = (behavior__this_content_on_transform.parent.parent.animationDuration) }, [behavior__this_content_on_transform.parent.parent,'animationDuration'])
+//assigning easing to (${parent.parent.animationEasing})
+	behavior__this_content_on_transform._replaceUpdater('easing', function() { behavior__this_content_on_transform.easing = (behavior__this_content_on_transform.parent.parent.animationEasing) }, [behavior__this_content_on_transform.parent.parent,'animationEasing'])
+
+	_this$content.setAnimation('transform', behavior__this_content_on_transform);
+
+//assigning contentWidth to (1)
+			$this._removeUpdater('contentWidth'); $this.contentWidth = (1);
+
+//setting up component ListModel
+			var _this$model = $c._this$model
+			_this$model.$s($c.$c$_this$model)
+			delete $c.$c$_this$model
+
+
+//assigning contentHeight to (1)
+			$this._removeUpdater('contentHeight'); $this.contentHeight = (1);
+//assigning handleNavigationKeys to (true)
+			$this._removeUpdater('handleNavigationKeys'); $this.handleNavigationKeys = (true);
+}
+
+
+//=====[component core.GridView]=====================
+
+	var GridViewBaseComponent = _globals.core.BaseView
+	var GridViewBasePrototype = GridViewBaseComponent.prototype
+
+/**
+ * @constructor
+ * @extends {_globals.core.BaseView}
+ */
+	var GridViewComponent = _globals.core.GridView = function(parent, row) {
+		GridViewBaseComponent.apply(this, arguments)
+
+	}
+	var GridViewPrototype = GridViewComponent.prototype = Object.create(GridViewBasePrototype)
+
+	GridViewPrototype.constructor = GridViewComponent
+
+	GridViewPrototype.componentName = 'core.GridView'
+	core.addProperty(GridViewPrototype, 'int', 'cellWidth', (100))
+	core.addProperty(GridViewPrototype, 'int', 'cellHeight', (100))
+	core.addProperty(GridViewPrototype, 'int', 'rows')
+	core.addProperty(GridViewPrototype, 'int', 'columns')
+/** @const @type {number} */
+	GridViewPrototype.FlowLeftToRight = 0
+/** @const @type {number} */
+	GridViewComponent.FlowLeftToRight = 0
+/** @const @type {number} */
+	GridViewPrototype.FlowTopToBottom = 1
+/** @const @type {number} */
+	GridViewComponent.FlowTopToBottom = 1
+	core.addProperty(GridViewPrototype, 'enum', 'flow')
+	GridViewPrototype._updateOverflow = function() {
+		if (!this.nativeScrolling)
+			return
+
+		var horizontal = this.flow !== this.FlowLeftToRight
+		var style = {}
+		if (horizontal) {
+			style['overflow-x'] = 'auto'
+			style['overflow-y'] = 'hidden'
+		} else {
+			style['overflow-x'] = 'hidden'
+			style['overflow-y'] = 'auto'
+		}
+		this.style(style)
+	}
+	GridViewPrototype._layout = function() {
+	var model = this._get('model', true)
+
+		if (!this.recursiveVisible && !this.offlineLayout)
+			return
+
+		var model = this._attached;
+		if (!model) {
+			this.layoutFinished()
+			return
+		}
+
+		this.count = model.count
+		if (!this.count) {
+			this.layoutFinished()
+			return
+		}
+
+		var horizontal = this.flow == this.FlowLeftToRight
+
+		var items = this._items
+		var n = items.length
+		var w = this.width, h = this.height
+		if (this.trace)
+			log("layout " + n + " into " + w + "x" + h + " @ " + this.content.x + "," + this.content.y)
+		var created = false
+		var x = 0, y = 0
+		var cx = this.content.x, cy = this.content.y
+
+		var atEnd = horizontal? function() { return cy + y >= h }: function() { return cx + x >= w }
+
+		var itemsCount = 0
+		var cellWidth = this.cellWidth, cellHeight = this.cellHeight
+		var stepX = cellWidth + this.spacing, stepY = cellHeight + this.spacing
+		for(var i = 0; i < n && !atEnd(); ++i) {
+			var item = this._items[i]
+
+			if (!item) {
+				item = this._createDelegate(i)
+				if (item)
+					created = true
+			}
+
+			++itemsCount
+
+			if (item) {
+				item.viewX = x
+				item.viewY = y
+			}
+
+			if (item) {
+				if (this.currentIndex === i && !item.focused) {
+					this.focusChild(item)
+					if (this.contentFollowsCurrentItem)
+						this.positionViewAtIndex(i)
+				}
+
+				var visible = horizontal? (cy + y + item.height >= 0 && cy + y < h): (cx + x + item.width >= 0 && cx + x < w)
+				item.visibleInView = visible
+			}
+
+			if (horizontal) {
+				x += stepX
+				if (x > 0 && x + cellWidth > w) {
+					x = 0
+					y += stepY
+				}
+			} else {
+				y += stepY
+				if (y > 0 && y + cellHeight > h) {
+					y = 0
+					x += stepX
+				}
+			}
+		}
+		for(; i < n; ++i) {
+			var item = items[i]
+			if (item)
+				item.visibleInView = false
+		}
+
+		if (!horizontal) {
+			this.rows = Math.floor((h + this.spacing) / (this.cellHeight + this.spacing))
+			this.columns = Math.floor((n + this.rows - 1) / this.rows)
+			this.contentWidth = this.content.width = this.columns * (this.cellWidth + this.spacing) - this.spacing
+			this.contentHeight = this.content.height = this.rows * (this.cellHeight + this.spacing) - this.spacing
+		} else {
+			this.columns = Math.floor((w + this.spacing ) / (this.cellWidth + this.spacing))
+			this.rows = Math.floor((n + this.columns - 1) / this.columns)
+			this.contentWidth = this.content.width = this.columns * (this.cellWidth + this.spacing) - this.spacing
+			this.contentHeight = this.content.height = this.rows * (this.cellHeight + this.spacing) - this.spacing
+		}
+		//log(horizontal, w, h, this.rows, this.columns, this.currentIndex, this.contentWidth + "x" + this.contentHeight)
+		this.layoutFinished()
+		if (created)
+			this._context.scheduleComplete()
+	}
+	GridViewPrototype.__complete = function() { GridViewBasePrototype.__complete.call(this)
+this._updateOverflow() }
+	GridViewPrototype.move = function(dx,dy) {
+		var horizontal = this.flow == this.FlowLeftToRight
+		var x, y
+		if (horizontal && this.contentHeight > this.height) {
+			y = this.contentY + dy
+			if (y < 0)
+				y = 0
+			else if (y > this.contentHeight - this.height)
+				y = this.contentHeight - this.height
+			this.contentY = y
+		} else if (!horizontal && this.contentWidth > this.width) {
+			x = this.contentX + dx
+			if (x < 0)
+				x = 0
+			else if (x > this.contentWidth - this.width)
+				x = this.contentWidth - this.width
+			this.contentX = x
+		}
+	}
+	GridViewPrototype.positionViewAtIndex = function(idx) {
+		var cx = this.contentX, cy = this.contentY
+		var itemBox = this.getItemPosition(idx)
+		var x = itemBox[0], y = itemBox[1]
+		var iw = itemBox[2], ih = itemBox[3]
+		var w = this.width, h = this.height
+		var horizontal = this.flow == this.FlowLeftToRight
+		if (!horizontal) {
+			if (iw > w) {
+				this.contentX = x - w / 2 + iw / 2
+				return
+			}
+			if (x - cx < 0)
+				this.contentX = x
+			else if (x - cx + iw > w)
+				this.contentX = x + iw - w
+		} else {
+			if (ih > h) {
+				this.contentY = y - h / 2 + ih / 2
+				return
+			}
+			if (y - cy < 0)
+				this.contentY = y
+			else if (y - cy + ih > h)
+				this.contentY = y + ih - h
+		}
+	}
+	GridViewPrototype.getItemPosition = function(idx) {
+		var horizontal = this.flow == this.FlowLeftToRight
+		var x, y, cw = this.cellWidth, ch = this.cellHeight
+		if (horizontal) {
+			if (this.columns == 0)
+				return [0, 0, 0, 0]
+			x = (idx % this.columns) * cw
+			y = Math.floor(idx / this.columns) * ch
+		} else {
+			if (this.rows == 0)
+				return [0, 0, 0, 0]
+			x = Math.floor(idx / this.rows) * cw
+			y = (idx % this.rows) * ch
+		}
+		return [x, y, cw, ch]
+	}
+	GridViewPrototype.indexAt = function(x,y) {
+		x -= this.content.x
+		y -= this.content.y
+		var horizontal = this.flow == this.FlowLeftToRight
+		x = Math.floor(x / (this.cellWidth + this.spacing))
+		y = Math.floor(y / (this.cellHeight + this.spacing))
+		if (!horizontal) {
+			return x * this.rows + y
+		} else {
+			return y * this.columns + x
+		}
+	}
+	var $code$0 = function(value) {
+		this._scheduleLayout()
+	}
+	_globals.core._protoOnChanged(GridViewPrototype, 'cellWidth', $code$0)
+	_globals.core._protoOnChanged(GridViewPrototype, 'cellHeight', $code$0)
+	_globals.core._protoOnChanged(GridViewPrototype, 'flow', function(value) {
+		this._updateOverflow()
+		this._scheduleLayout()
+	})
+	_globals.core._protoOnKey(GridViewPrototype, 'Key', function(key,event) {
+		if (!this.handleNavigationKeys)
+			return false;
+
+		var horizontal = this.flow == this.FlowLeftToRight
+		if (horizontal) {
+			switch(key) {
+				case 'Left':
+					if (!this.keyNavigationWraps && this.currentIndex == 0)
+						return false
+					--this.currentIndex
+					return true
+				case 'Right':
+					if (!this.keyNavigationWraps && this.currentIndex == this.columns - 1)
+						return false
+					++this.currentIndex
+					return true
+				case 'Up':
+					if (!this.keyNavigationWraps && this.currentIndex < this.columns)
+						return false
+					this.currentIndex -= this.columns
+					return true
+				case 'Down':
+					if (!this.keyNavigationWraps && this.currentIndex > this.count - this.columns + 1)
+						return false
+					this.currentIndex += this.columns
+					return true
+			}
+		} else {
+			switch(key) {
+				case 'Up':
+					if (!this.keyNavigationWraps && this.currentIndex == 0)
+						return false
+					--this.currentIndex
+					return true
+				case 'Down':
+					if (!this.keyNavigationWraps && this.currentIndex == this.columns - 1)
+						return false
+					++this.currentIndex
+					return true
+				case 'Left':
+					if (!this.keyNavigationWraps && this.currentIndex < this.rows)
+						return false
+					this.currentIndex -= this.rows
+					return true
+				case 'Right':
+					if (!this.keyNavigationWraps && this.currentIndex > this.count - this.rows + 1)
+						return false
+					this.currentIndex += this.rows
+					return true
+			}
+		}
+	})
+
+//=====[component src.Gallery]=====================
+
+	var GalleryBaseComponent = _globals.core.GridView
+	var GalleryBasePrototype = GalleryBaseComponent.prototype
+
+/**
+ * @constructor
+ * @extends {_globals.core.GridView}
+ */
+	var GalleryComponent = _globals.src.Gallery = function(parent, row) {
+		GalleryBaseComponent.apply(this, arguments)
+
+	}
+	var GalleryPrototype = GalleryComponent.prototype = Object.create(GalleryBasePrototype)
+
+	GalleryPrototype.constructor = GalleryComponent
+
+	GalleryPrototype.componentName = 'src.Gallery'
+
+	GalleryPrototype.$c = function($c) {
+		var $this = this;
+		GalleryBasePrototype.$c.call(this, $c.$b = { })
+var _this$child0 = new _globals.controls.experiment.NetworkRequest($this)
+		$c._this$child0 = _this$child0
+
+//creating component NetworkRequest
+		_this$child0.$c($c.$c$_this$child0 = { })
+		_this$child0._setId('imagesRequest')
+		$this.addChild(_this$child0)
+//creating component src.<anonymous>
+		var _this$model = new _globals.core.ProxyModel($this)
+		$c._this$model = _this$model
+
+//creating component ProxyModel
+		_this$model.$c($c.$c$_this$model = { })
+		_this$model._setId('proxyModel')
+//creating component src.<anonymous>
+		var _this_model$target = new _globals.core.ListModel(_this$model)
+		$c._this_model$target = _this_model$target
+
+//creating component ListModel
+		_this_model$target.$c($c.$c$_this_model$target = { })
+		_this_model$target._setId('imagesModel')
+		_this$model.target = _this_model$target
+		$this.model = _this$model
+		$this.delegate = (function(__parent, __row) {
+		var delegate = new _globals.core.Image(__parent, __row)
+		var $c = { delegate : delegate }
+
+//creating component Image
+			delegate.$c($c.$c$delegate = { })
+	core.addProperty(delegate, 'string', 'imageUrl')
+			var delegate$child0 = new _globals.core.HoverMixin(delegate)
+			$c.delegate$child0 = delegate$child0
+
+//creating component HoverMixin
+			delegate$child0.$c($c.$c$delegate$child0 = { })
+			delegate$child0._setId('hover')
+			delegate.addChild(delegate$child0)
+			var delegate$child1 = new _globals.core.Rectangle(delegate)
+			$c.delegate$child1 = delegate$child1
+
+//creating component Rectangle
+			delegate$child1.$c($c.$c$delegate$child1 = { })
+
+			delegate.addChild(delegate$child1)
+			var delegate$child2 = new _globals.core.Rectangle(delegate)
+			$c.delegate$child2 = delegate$child2
+
+//creating component Rectangle
+			delegate$child2.$c($c.$c$delegate$child2 = { })
+			var delegate_child2$child0 = new _globals.core.Text(delegate$child2)
+			$c.delegate_child2$child0 = delegate_child2$child0
+
+//creating component Text
+			delegate_child2$child0.$c($c.$c$delegate_child2$child0 = { })
+			delegate_child2$child0._setId('descText')
+			delegate$child2.addChild(delegate_child2$child0)
+			var delegate_child2$child1 = new _globals.core.Column(delegate$child2)
+			$c.delegate_child2$child1 = delegate_child2$child1
+
+//creating component Column
+			delegate_child2$child1.$c($c.$c$delegate_child2$child1 = { })
+			var delegate_child2_child1$child0 = new _globals.controls.experiment.AbstractButton(delegate_child2$child1)
+			$c.delegate_child2_child1$child0 = delegate_child2_child1$child0
+
+//creating component AbstractButton
+			delegate_child2_child1$child0.$c($c.$c$delegate_child2_child1$child0 = { })
+
+			delegate_child2$child1.addChild(delegate_child2_child1$child0)
+			var delegate_child2_child1$child1 = new _globals.controls.experiment.AbstractButton(delegate_child2$child1)
+			$c.delegate_child2_child1$child1 = delegate_child2_child1$child1
+
+//creating component AbstractButton
+			delegate_child2_child1$child1.$c($c.$c$delegate_child2_child1$child1 = { })
+
+			delegate_child2$child1.addChild(delegate_child2_child1$child1)
+			delegate$child2.addChild(delegate_child2$child1)
+			delegate.addChild(delegate$child2)
+			delegate._setId('image')
+
+//setting up component Image
+			var delegate = $c.delegate
+			delegate.$s($c.$c$delegate)
+			delete $c.$c$delegate
+
+//assigning source to (${imageUrl})
+			delegate._replaceUpdater('source', function() { delegate.source = (delegate.imageUrl) }, [delegate,'imageUrl'])
+//assigning imageUrl to (${webApp.serverUrl} + 'images/' + ${model.file})
+			delegate._replaceUpdater('imageUrl', function() { delegate.imageUrl = (delegate._get('webApp').serverUrl + 'images/' + delegate._get('model').file) }, [delegate._get('_delegate'),'_row',delegate._get('webApp'),'serverUrl'])
+//assigning height to (250)
+			delegate._removeUpdater('height'); delegate.height = (250);
+//assigning width to (250)
+			delegate._removeUpdater('width'); delegate.width = (250);
+//assigning fillMode to (_globals.core.Image.prototype.PreserveAspectCrop)
+			delegate._removeUpdater('fillMode'); delegate.fillMode = (_globals.core.Image.prototype.PreserveAspectCrop);
+
+//setting up component HoverMixin
+			var delegate$child0 = $c.delegate$child0
+			delegate$child0.$s($c.$c$delegate$child0)
+			delete $c.$c$delegate$child0
+
+
+
+//setting up component Rectangle
+			var delegate$child1 = $c.delegate$child1
+			delegate$child1.$s($c.$c$delegate$child1)
+			delete $c.$c$delegate$child1
+
+//assigning color to ('lightgray')
+			delegate$child1._removeUpdater('color'); delegate$child1.color = ('lightgray');
+//assigning opacity to (${image.status} !== _globals.core.Image.prototype.Ready)
+			delegate$child1._replaceUpdater('opacity', function() { delegate$child1.opacity = (delegate$child1._get('image').status !== _globals.core.Image.prototype.Ready) }, [delegate$child1._get('image'),'status'])
+//assigning anchors.fill to (${parent})
+			delegate$child1.anchors._removeUpdater('fill'); delegate$child1.anchors.fill = (delegate$child1.parent);
+	var behavior_delegate_child1_on_opacity = new _globals.core.Animation(delegate$child1)
+	var behavior_delegate_child1_on_opacity$c = { behavior_delegate_child1_on_opacity: behavior_delegate_child1_on_opacity }
+
+//creating component Animation
+	behavior_delegate_child1_on_opacity.$c(behavior_delegate_child1_on_opacity$c.$c$behavior_delegate_child1_on_opacity = { })
+
+
+//setting up component Animation
+	var behavior_delegate_child1_on_opacity = behavior_delegate_child1_on_opacity$c.behavior_delegate_child1_on_opacity
+	behavior_delegate_child1_on_opacity.$s(behavior_delegate_child1_on_opacity$c.$c$behavior_delegate_child1_on_opacity)
+	delete behavior_delegate_child1_on_opacity$c.$c$behavior_delegate_child1_on_opacity
+
+//assigning duration to (1000)
+	behavior_delegate_child1_on_opacity._removeUpdater('duration'); behavior_delegate_child1_on_opacity.duration = (1000);
+
+	delegate$child1.setAnimation('opacity', behavior_delegate_child1_on_opacity);
+
+
+//setting up component Rectangle
+			var delegate$child2 = $c.delegate$child2
+			delegate$child2.$s($c.$c$delegate$child2)
+			delete $c.$c$delegate$child2
+
+//assigning opacity to (0.8)
+			delegate$child2._removeUpdater('opacity'); delegate$child2.opacity = (0.8);
+//assigning color to ('white')
+			delegate$child2._removeUpdater('color'); delegate$child2.color = ('white');
+//assigning anchors.margins to (10)
+			delegate$child2.anchors._removeUpdater('margins'); delegate$child2.anchors.margins = (10);
+//assigning visible to (${hover.value})
+			delegate$child2._replaceUpdater('visible', function() { delegate$child2.visible = (delegate$child2._get('hover').value) }, [delegate$child2._get('hover'),'value'])
+//assigning radius to (5)
+			delegate$child2._removeUpdater('radius'); delegate$child2.radius = (5);
+//assigning anchors.fill to (${parent})
+			delegate$child2.anchors._removeUpdater('fill'); delegate$child2.anchors.fill = (delegate$child2.parent);
+
+//setting up component Text
+			var delegate_child2$child0 = $c.delegate_child2$child0
+			delegate_child2$child0.$s($c.$c$delegate_child2$child0)
+			delete $c.$c$delegate_child2$child0
+
+//assigning anchors.horizontalCenter to (${parent})
+			delegate_child2$child0.anchors._removeUpdater('horizontalCenter'); delegate_child2$child0.anchors.horizontalCenter = (delegate_child2$child0.parent);
+//assigning text to ('<b>' + ${model.name} + '</b><br><br><b>' + ${model.compress_size} + '</b> MB<br>(original: <b>' + ${model.original_size} + '</b> MB)<br><br>' + ${model.time})
+			delegate_child2$child0._replaceUpdater('text', function() { delegate_child2$child0.text = ('<b>' + delegate_child2$child0._get('model').name + '</b><br><br><b>' + delegate_child2$child0._get('model').compress_size + '</b> MB<br>(original: <b>' + delegate_child2$child0._get('model').original_size + '</b> MB)<br><br>' + delegate_child2$child0._get('model').time) }, [delegate_child2$child0._get('_delegate'),'_row'])
+//assigning width to (((98) / 100 * ${parent.width}))
+			delegate_child2$child0._replaceUpdater('width', function() { delegate_child2$child0.width = (((98) / 100 * delegate_child2$child0.parent.width)) }, [delegate_child2$child0.parent,'width'])
+//assigning horizontalAlignment to (_globals.core.Text.prototype.AlignHCenter)
+			delegate_child2$child0._removeUpdater('horizontalAlignment'); delegate_child2$child0.horizontalAlignment = (_globals.core.Text.prototype.AlignHCenter);
+//assigning wrapMode to (_globals.core.Text.prototype.WrapAnywhere)
+			delegate_child2$child0._removeUpdater('wrapMode'); delegate_child2$child0.wrapMode = (_globals.core.Text.prototype.WrapAnywhere);
+//assigning x to (5)
+			delegate_child2$child0._removeUpdater('x'); delegate_child2$child0.x = (5);
+
+
+//setting up component Column
+			var delegate_child2$child1 = $c.delegate_child2$child1
+			delegate_child2$child1.$s($c.$c$delegate_child2$child1)
+			delete $c.$c$delegate_child2$child1
+
+//assigning anchors.horizontalCenter to (${parent})
+			delegate_child2$child1.anchors._removeUpdater('horizontalCenter'); delegate_child2$child1.anchors.horizontalCenter = (delegate_child2$child1.parent);
+//assigning anchors.bottom to (${parent.bottom})
+			delegate_child2$child1.anchors._replaceUpdater('bottom', function() { delegate_child2$child1.anchors.bottom = (delegate_child2$child1.parent.bottom) }, [delegate_child2$child1.parent,'bottom'])
+
+//setting up component AbstractButton
+			var delegate_child2_child1$child0 = $c.delegate_child2_child1$child0
+			delegate_child2_child1$child0.$s($c.$c$delegate_child2_child1$child0)
+			delete $c.$c$delegate_child2_child1$child0
+
+//assigning text to ('Compress')
+			delegate_child2_child1$child0._removeUpdater('text'); delegate_child2_child1$child0.text = ('Compress');
+//assigning height to (35)
+			delegate_child2_child1$child0._removeUpdater('height'); delegate_child2_child1$child0.height = (35);
+//assigning width to ((${parent.width}))
+			delegate_child2_child1$child0._replaceUpdater('width', function() { delegate_child2_child1$child0.width = ((delegate_child2_child1$child0.parent.width)) }, [delegate_child2_child1$child0.parent,'width'])
+			delegate_child2_child1$child0.on('clicked', function() {
+	var image = this._get('image', true)
+ window.open(image.imageUrl, '_blank') }.bind(delegate_child2_child1$child0))
+
+
+//setting up component AbstractButton
+			var delegate_child2_child1$child1 = $c.delegate_child2_child1$child1
+			delegate_child2_child1$child1.$s($c.$c$delegate_child2_child1$child1)
+			delete $c.$c$delegate_child2_child1$child1
+
+//assigning text to ('Original')
+			delegate_child2_child1$child1._removeUpdater('text'); delegate_child2_child1$child1.text = ('Original');
+//assigning height to (35)
+			delegate_child2_child1$child1._removeUpdater('height'); delegate_child2_child1$child1.height = (35);
+//assigning width to ((${parent.width}))
+			delegate_child2_child1$child1._replaceUpdater('width', function() { delegate_child2_child1$child1.width = ((delegate_child2_child1$child1.parent.width)) }, [delegate_child2_child1$child1.parent,'width'])
+			delegate_child2_child1$child1.on('clicked', function() {
+	var model = this._get('model', true)
+ window.open(model.original_url, '_blank') }.bind(delegate_child2_child1$child1))
+
+
+
+
+
+		return delegate
+})
+		$this._setId('images')
+	}
+	GalleryPrototype.$s = function($c) {
+		var $this = this;
+	GalleryBasePrototype.$s.call(this, $c.$b); delete $c.$b
+//assigning cellWidth to (250)
+			$this._removeUpdater('cellWidth'); $this.cellWidth = (250);
+//assigning spacing to (5)
+			$this._removeUpdater('spacing'); $this.spacing = (5);
+//assigning height to (${contentHeight})
+			$this._replaceUpdater('height', function() { $this.height = ($this.contentHeight) }, [$this,'contentHeight'])
+//assigning width to ((${parent.width}))
+			$this._replaceUpdater('width', function() { $this.width = (($this.parent.width)) }, [$this.parent,'width'])
+
+//setting up component ProxyModel
+			var _this$model = $c._this$model
+			_this$model.$s($c.$c$_this$model)
+			delete $c.$c$_this$model
+
+
+//setting up component ListModel
+			var _this_model$target = $c._this_model$target
+			_this_model$target.$s($c.$c$_this_model$target)
+			delete $c.$c$_this_model$target
+
+			_this_model$target.__complete = function() {
+	var imagesRequest = this._get('imagesRequest', true), filterName = this._get('filterName', true), filterSize = this._get('filterSize', true), proxyModel = this._get('proxyModel', true), filters = this._get('filters', true)
+ _globals.core.ListModel.prototype.__complete.call(this)
+imagesRequest.send()
+                proxyModel.setFilter(item => item.name.includes(filterName.text) && item.compress_size >= filterSize.text && item.time >= filters.filterDateTime) }.bind(_this_model$target)
+
+
+//assigning anchors.topMargin to (20)
+			$this.anchors._removeUpdater('topMargin'); $this.anchors.topMargin = (20);
+//assigning anchors.top to (${filters.bottom})
+			$this.anchors._replaceUpdater('top', function() { $this.anchors.top = ($this._get('filters').bottom) }, [$this._get('filters'),'bottom'])
+//assigning cellHeight to (250)
+			$this._removeUpdater('cellHeight'); $this.cellHeight = (250);
+
+//setting up component NetworkRequest
+			var _this$child0 = $c._this$child0
+			_this$child0.$s($c.$c$_this$child0)
+			delete $c.$c$_this$child0
+
+//assigning url to (${webApp.serverUrl} + 'all')
+			_this$child0._replaceUpdater('url', function() { _this$child0.url = (_this$child0._get('webApp').serverUrl + 'all') }, [_this$child0._get('webApp'),'serverUrl'])
+			_this$child0.on('error', function(err) {
+	var errorRect = this._get('errorRect', true)
+
+            errorRect.visible = true
+        }.bind(_this$child0))
+			_this$child0.on('loaded', function(res) {
+	var imagesModel = this._get('imagesModel', true)
+
+            log(this.url)
+
+            let result = JSON.parse(res)
+            imagesModel.append(result)
+        }.bind(_this$child0))
 }
 
 
@@ -2354,6 +3637,7 @@ this._scheduleLayout() }
 
 	CompressInputPrototype.componentName = 'src.CompressInput'
 	core.addProperty(CompressInputPrototype, 'bool', 'active')
+	core.addProperty(CompressInputPrototype, 'string', 'format')
 
 	CompressInputPrototype.$c = function($c) {
 		var $this = this;
@@ -2386,7 +3670,7 @@ var _this$child0 = new _globals.controls.experiment.TextInputMaterial($this)
 		_this$child3.$c($c.$c$_this$child3 = { })
 		_this$child3._setId('urlRequest')
 		$this.addChild(_this$child3)
-		$this._setId('inputRow')
+		$this._setId('compressInput')
 	}
 	CompressInputPrototype.$s = function($c) {
 		var $this = this;
@@ -2397,6 +3681,8 @@ var _this$child0 = new _globals.controls.experiment.TextInputMaterial($this)
 			$this.anchors._removeUpdater('horizontalCenter'); $this.anchors.horizontalCenter = ($this.parent);
 //assigning spacing to (10)
 			$this._removeUpdater('spacing'); $this.spacing = (10);
+//assigning format to ('jpg')
+			$this._removeUpdater('format'); $this.format = ('jpg');
 
 //setting up component TextInputMaterial
 			var _this$child0 = $c._this$child0
@@ -2405,10 +3691,20 @@ var _this$child0 = new _globals.controls.experiment.TextInputMaterial($this)
 
 //assigning width to (300)
 			_this$child0._removeUpdater('width'); _this$child0.width = (300);
-//assigning enabled to (! ${inputRow.active})
-			_this$child0._replaceUpdater('enabled', function() { _this$child0.enabled = (! _this$child0._get('inputRow').active) }, [_this$child0._get('inputRow'),'active'])
+//assigning enabled to (! ${compressInput.active})
+			_this$child0._replaceUpdater('enabled', function() { _this$child0.enabled = (! _this$child0._get('compressInput').active) }, [_this$child0._get('compressInput'),'active'])
 //assigning placeholder.text to (_globals.qsTr(('Insert a link to image compression')))
 			_this$child0.placeholder._replaceUpdater('text', function() { _this$child0.placeholder.text = (_globals.qsTr(('Insert a link to image compression'))) }, [_this$child0._context,'language'])
+			_this$child0.onChanged('text', function(value) {
+	var compressInput = this._get('compressInput', true)
+
+            if (this.text.includes('png'))
+                compressInput.format = 'png'
+            else if (this.text.match(/.jpg|.jpeg/g))
+                compressInput.format = 'jpg'
+            else
+                compressInput.format = ''
+        }.bind(_this$child0))
 
 
 //setting up component TextInputMaterial
@@ -2416,10 +3712,10 @@ var _this$child0 = new _globals.controls.experiment.TextInputMaterial($this)
 			_this$child1.$s($c.$c$_this$child1)
 			delete $c.$c$_this$child1
 
-//assigning enabled to (! ${inputRow.active})
-			_this$child1._replaceUpdater('enabled', function() { _this$child1.enabled = (! _this$child1._get('inputRow').active) }, [_this$child1._get('inputRow'),'active'])
-//assigning placeholder.text to (_globals.qsTr(('Quality (20)')))
-			_this$child1.placeholder._replaceUpdater('text', function() { _this$child1.placeholder.text = (_globals.qsTr(('Quality (20)'))) }, [_this$child1._context,'language'])
+//assigning enabled to (! ${compressInput.active})
+			_this$child1._replaceUpdater('enabled', function() { _this$child1.enabled = (! _this$child1._get('compressInput').active) }, [_this$child1._get('compressInput'),'active'])
+//assigning placeholder.text to (${compressInput.format} === 'png' ? _globals.qsTr(('Compress (9)')) : _globals.qsTr(('Quality (20)')))
+			_this$child1.placeholder._replaceUpdater('text', function() { _this$child1.placeholder.text = (_this$child1._get('compressInput').format === 'png' ? _globals.qsTr(('Compress (9)')) : _globals.qsTr(('Quality (20)'))) }, [_this$child1._context,'language',_this$child1._get('compressInput'),'format'])
 
 
 //setting up component ButtonMaterial
@@ -2429,19 +3725,19 @@ var _this$child0 = new _globals.controls.experiment.TextInputMaterial($this)
 
 //assigning text to (_globals.qsTr(('Compress')))
 			_this$child2._replaceUpdater('text', function() { _this$child2.text = (_globals.qsTr(('Compress'))) }, [_this$child2._context,'language'])
-//assigning enabled to (! ${inputRow.active})
-			_this$child2._replaceUpdater('enabled', function() { _this$child2.enabled = (! _this$child2._get('inputRow').active) }, [_this$child2._get('inputRow'),'active'])
+//assigning enabled to (! ${compressInput.active})
+			_this$child2._replaceUpdater('enabled', function() { _this$child2.enabled = (! _this$child2._get('compressInput').active) }, [_this$child2._get('compressInput'),'active'])
 //assigning height to (${imageInput.height})
 			_this$child2._replaceUpdater('height', function() { _this$child2.height = (_this$child2._get('imageInput').height) }, [_this$child2._get('imageInput'),'height'])
 			_this$child2.on('clicked', function() {
-	var inputRow = this._get('inputRow', true), urlRequest = this._get('urlRequest', true), imageInput = this._get('imageInput', true)
+	var urlRequest = this._get('urlRequest', true), imageInput = this._get('imageInput', true), compressInput = this._get('compressInput', true)
 
             if(!imageInput.text || imageInput.text.substring(0, 4) !== 'http') {
                 log('TODO: url error')
                 return
             }
 
-            inputRow.active = true
+            compressInput.active = true
             urlRequest.send()
         }.bind(_this$child2))
 
@@ -2459,20 +3755,32 @@ var _this$child0 = new _globals.controls.experiment.TextInputMaterial($this)
             errorRect.visible = true
         }.bind(_this$child3))
 			_this$child3.on('loaded', function(res) {
-	var inputRow = this._get('inputRow', true), imageInput = this._get('imageInput', true), imagesModel = this._get('imagesModel', true), time = this._get('time', true)
+	var imagesModel = this._get('imagesModel', true), compressErrorRect = this._get('compressErrorRect', true), compressErrorTimer = this._get('compressErrorTimer', true), time = this._get('time', true), imageInput = this._get('imageInput', true), compressInput = this._get('compressInput', true)
 
-            log(this.url)
             imageInput.text = ''
-            inputRow.active = false
+            compressInput.active = false
 
             let result = JSON.parse(res)
-            log(result)
 
-            let obj = {name: result.image.original.name, original_size: result.image.original.size,
-                                compress_size: result.image.compress.size, time: result.date }
-            log(obj)
-            imagesModel.append({name: result.image.original.name, original_size: result.image.original.size,
-                                file: result.image.compress.name, compress_size: result.image.compress.size, time: result.date })
+            if (result.error) {
+                let errorMessage
+                switch(result.error) {
+                    case 'Download': errorMessage = 'Incorrect image url'; break
+                    case 'SQL': errorMessage = 'Server error'; break
+                    case 'Convert': errorMessage = 'Incorrect image format'; break
+                    default: errorMessage = 'Unknown'; break
+                }
+
+                compressErrorRect.errorText = errorMessage
+                compressErrorRect.visible = true
+                compressErrorTimer.start()
+                return
+            }
+
+            let imageNew = {name: result.image.original.name, original_size: result.image.original.size, original_url: result.image.original.url,
+                                file: result.image.compress.name, compress_size: result.image.compress.size, time: result.date }
+            
+            imagesModel.insert(0, imageNew)
         }.bind(_this$child3))
 }
 
@@ -2535,37 +3843,210 @@ var _this$child0 = new _globals.controls.experiment.TextInputMaterial($this)
 		}
 	})
 
-//=====[component core.BaseViewContent]=====================
+//=====[component src.Filtres]=====================
 
-	var BaseViewContentBaseComponent = _globals.core.Item
-	var BaseViewContentBasePrototype = BaseViewContentBaseComponent.prototype
+	var FiltresBaseComponent = _globals.core.Row
+	var FiltresBasePrototype = FiltresBaseComponent.prototype
 
 /**
  * @constructor
- * @extends {_globals.core.Item}
+ * @extends {_globals.core.Row}
  */
-	var BaseViewContentComponent = _globals.core.BaseViewContent = function(parent, row) {
-		BaseViewContentBaseComponent.apply(this, arguments)
-	//custom constructor:
-	{
-		this.style('will-change', 'scroll-position, transform, left, top')
-	}
+	var FiltresComponent = _globals.src.Filtres = function(parent, row) {
+		FiltresBaseComponent.apply(this, arguments)
 
 	}
-	var BaseViewContentPrototype = BaseViewContentComponent.prototype = Object.create(BaseViewContentBasePrototype)
+	var FiltresPrototype = FiltresComponent.prototype = Object.create(FiltresBasePrototype)
 
-	BaseViewContentPrototype.constructor = BaseViewContentComponent
+	FiltresPrototype.constructor = FiltresComponent
 
-	BaseViewContentPrototype.componentName = 'core.BaseViewContent'
-	BaseViewContentPrototype._updateScrollPositions = function(x,y,layout) {
-		this._setProperty('x', -x)
-		this._setProperty('y', -y)
-		if (layout === undefined || layout) //default true
-			this.parent._scheduleLayout()
+	FiltresPrototype.componentName = 'src.Filtres'
+	core.addProperty(FiltresPrototype, 'bool', 'isSearch')
+	core.addProperty(FiltresPrototype, 'string', 'filterDateTime')
+	FiltresPrototype.resetDate = function() {
+	var filterDate = this._get('filterDate', true), filterTime = this._get('filterTime', true), filters = this._get('filters', true)
+
+            let searchDate = filterDate.value
+            let searchTime = filterTime.value ? filterTime.value : '00:00'
+            filters.filterDateTime = searchDate + ' ' + searchTime
+            log('Date', filters.filterDateTime)
+        }
+
+	FiltresPrototype.$c = function($c) {
+		var $this = this;
+		FiltresBasePrototype.$c.call(this, $c.$b = { })
+var _this$child0 = new _globals.core.Text($this)
+		$c._this$child0 = _this$child0
+
+//creating component Text
+		_this$child0.$c($c.$c$_this$child0 = { })
+
+		$this.addChild(_this$child0)
+		var _this$child1 = new _globals.controls.experiment.TextInputMaterial($this)
+		$c._this$child1 = _this$child1
+
+//creating component TextInputMaterial
+		_this$child1.$c($c.$c$_this$child1 = { })
+		_this$child1._setId('filterName')
+		$this.addChild(_this$child1)
+		var _this$child2 = new _globals.core.Text($this)
+		$c._this$child2 = _this$child2
+
+//creating component Text
+		_this$child2.$c($c.$c$_this$child2 = { })
+
+		$this.addChild(_this$child2)
+		var _this$child3 = new _globals.controls.experiment.TextInputMaterial($this)
+		$c._this$child3 = _this$child3
+
+//creating component TextInputMaterial
+		_this$child3.$c($c.$c$_this$child3 = { })
+		_this$child3._setId('filterSize')
+		$this.addChild(_this$child3)
+		var _this$child4 = new _globals.core.Text($this)
+		$c._this$child4 = _this$child4
+
+//creating component Text
+		_this$child4.$c($c.$c$_this$child4 = { })
+
+		$this.addChild(_this$child4)
+		var _this$child5 = new _globals.controls.input.DateInput($this)
+		$c._this$child5 = _this$child5
+
+//creating component DateInput
+		_this$child5.$c($c.$c$_this$child5 = { })
+		_this$child5._setId('filterDate')
+		$this.addChild(_this$child5)
+		var _this$child6 = new _globals.controls.input.TimeInput($this)
+		$c._this$child6 = _this$child6
+
+//creating component TimeInput
+		_this$child6.$c($c.$c$_this$child6 = { })
+		_this$child6._setId('filterTime')
+		$this.addChild(_this$child6)
+		var _this$child7 = new _globals.controls.web.Button($this)
+		$c._this$child7 = _this$child7
+
+//creating component Button
+		_this$child7.$c($c.$c$_this$child7 = { })
+
+		$this.addChild(_this$child7)
+		$this._setId('filters')
 	}
-	var $code$0 = function(value) { this.parent._scheduleLayout() }
-	_globals.core._protoOnChanged(BaseViewContentPrototype, 'x', $code$0)
-	_globals.core._protoOnChanged(BaseViewContentPrototype, 'y', $code$0)
+	FiltresPrototype.$s = function($c) {
+		var $this = this;
+	FiltresBasePrototype.$s.call(this, $c.$b); delete $c.$b
+//assigning anchors.horizontalAlignment to (${parent})
+			$this.anchors._removeUpdater('horizontalAlignment'); $this.anchors.horizontalAlignment = ($this.parent);
+//assigning spacing to (3)
+			$this._removeUpdater('spacing'); $this.spacing = (3);
+//assigning isSearch to (${filterName.text} || ${filterSize.text} || ${filterDate.value} || ${filterTime.value})
+			$this._replaceUpdater('isSearch', function() { $this.isSearch = ($this._get('filterName').text || $this._get('filterSize').text || $this._get('filterDate').value || $this._get('filterTime').value) }, [$this._get('filterDate'),'value',$this._get('filterTime'),'value',$this._get('filterSize'),'text',$this._get('filterName'),'text'])
+//assigning anchors.topMargin to (30)
+			$this.anchors._removeUpdater('topMargin'); $this.anchors.topMargin = (30);
+//assigning anchors.top to (${compressInput.bottom})
+			$this.anchors._replaceUpdater('top', function() { $this.anchors.top = ($this._get('compressInput').bottom) }, [$this._get('compressInput'),'bottom'])
+
+//setting up component Text
+			var _this$child0 = $c._this$child0
+			_this$child0.$s($c.$c$_this$child0)
+			delete $c.$c$_this$child0
+
+//assigning text to ('Search:')
+			_this$child0._removeUpdater('text'); _this$child0.text = ('Search:');
+
+
+//setting up component TextInputMaterial
+			var _this$child1 = $c._this$child1
+			_this$child1.$s($c.$c$_this$child1)
+			delete $c.$c$_this$child1
+
+//assigning width to (250)
+			_this$child1._removeUpdater('width'); _this$child1.width = (250);
+			_this$child1.onChanged('text', function(value) {
+	var proxyModel = this._get('proxyModel', true)
+
+                proxyModel._buildIndexMap()
+            }.bind(_this$child1))
+
+
+//setting up component Text
+			var _this$child2 = $c._this$child2
+			_this$child2.$s($c.$c$_this$child2)
+			delete $c.$c$_this$child2
+
+//assigning text to ('Filter by size (MB):')
+			_this$child2._removeUpdater('text'); _this$child2.text = ('Filter by size (MB):');
+
+
+//setting up component TextInputMaterial
+			var _this$child3 = $c._this$child3
+			_this$child3.$s($c.$c$_this$child3)
+			delete $c.$c$_this$child3
+
+			_this$child3.onChanged('text', function(value) {
+	var proxyModel = this._get('proxyModel', true)
+
+                proxyModel._buildIndexMap()
+            }.bind(_this$child3))
+
+
+//setting up component Text
+			var _this$child4 = $c._this$child4
+			_this$child4.$s($c.$c$_this$child4)
+			delete $c.$c$_this$child4
+
+//assigning text to ('Filter by load date:')
+			_this$child4._removeUpdater('text'); _this$child4.text = ('Filter by load date:');
+
+
+//setting up component DateInput
+			var _this$child5 = $c._this$child5
+			_this$child5.$s($c.$c$_this$child5)
+			delete $c.$c$_this$child5
+
+			_this$child5.onChanged('value', function(value) {
+	var proxyModel = this._get('proxyModel', true), filters = this._get('filters', true)
+
+                filters.resetDate()
+                proxyModel._buildIndexMap()
+            }.bind(_this$child5))
+
+
+//setting up component TimeInput
+			var _this$child6 = $c._this$child6
+			_this$child6.$s($c.$c$_this$child6)
+			delete $c.$c$_this$child6
+
+//assigning enabled to (${filterDate.value})
+			_this$child6._replaceUpdater('enabled', function() { _this$child6.enabled = (_this$child6._get('filterDate').value) }, [_this$child6._get('filterDate'),'value'])
+			_this$child6.onChanged('value', function(value) {
+	var proxyModel = this._get('proxyModel', true), filters = this._get('filters', true)
+
+                filters.resetDate()
+                proxyModel._buildIndexMap()
+            }.bind(_this$child6))
+
+
+//setting up component Button
+			var _this$child7 = $c._this$child7
+			_this$child7.$s($c.$c$_this$child7)
+			delete $c.$c$_this$child7
+
+//assigning text to ('Reset')
+			_this$child7._removeUpdater('text'); _this$child7.text = ('Reset');
+			_this$child7.on('clicked', function() {
+	var filterDate = this._get('filterDate', true), filterName = this._get('filterName', true), filterSize = this._get('filterSize', true), filterTime = this._get('filterTime', true)
+
+                filterName.text = ''
+                filterSize.text = ''
+                filterDate.element.dom.value = ''
+                filterTime.element.dom.value = ''
+                filterDate.value = ''
+                filterTime.value = ''  
+            }.bind(_this$child7))
+}
+
 
 //=====[component controls.experiment.NetworkRequest]=====================
 
@@ -2807,6 +4288,67 @@ var _this$child0 = new _globals.core.Rectangle($this)
 	_globals.core._protoOnChanged(AnimationPrototype, 'cssTransition', $code$0)
 	_globals.core._protoOnChanged(AnimationPrototype, 'running', $code$0)
 
+//=====[component controls.core.PlaceholderFont]=====================
+
+	var PlaceholderFontBaseComponent = _globals.core.Object
+	var PlaceholderFontBasePrototype = PlaceholderFontBaseComponent.prototype
+
+/**
+ * @constructor
+ * @extends {_globals.core.Object}
+ */
+	var PlaceholderFontComponent = _globals.controls.core.PlaceholderFont = function(parent, row) {
+		PlaceholderFontBaseComponent.apply(this, arguments)
+
+	}
+	var PlaceholderFontPrototype = PlaceholderFontComponent.prototype = Object.create(PlaceholderFontBasePrototype)
+
+	PlaceholderFontPrototype.constructor = PlaceholderFontComponent
+
+	PlaceholderFontPrototype.componentName = 'controls.core.PlaceholderFont'
+	core.addProperty(PlaceholderFontPrototype, 'string', 'family')
+	core.addProperty(PlaceholderFontPrototype, 'bool', 'italic')
+	core.addProperty(PlaceholderFontPrototype, 'bool', 'bold')
+	core.addProperty(PlaceholderFontPrototype, 'bool', 'underline')
+	core.addProperty(PlaceholderFontPrototype, 'bool', 'strike')
+	core.addProperty(PlaceholderFontPrototype, 'int', 'pixelSize')
+	core.addProperty(PlaceholderFontPrototype, 'int', 'pointSize')
+	core.addProperty(PlaceholderFontPrototype, 'int', 'lineHeight')
+	core.addProperty(PlaceholderFontPrototype, 'int', 'weight')
+	PlaceholderFontPrototype.getClass = function() {
+		var cls
+		if (!this._placeholderClass) {
+			cls = this._placeholderClass = this._context.stylesheet.allocateClass('placeholderFont')
+			this.parent.parent.element.addClass(cls)
+		}
+		else
+			cls = this._placeholderClass
+		return cls
+	}
+	PlaceholderFontPrototype.updateProperty = function(name,value) {
+		var cls = this.getClass()
+
+		//fixme: port to modernizr
+		var selectors = ['::-webkit-input-placeholder', '::-moz-placeholder', ':-moz-placeholder', ':-ms-input-placeholder']
+		selectors.forEach(function(selector) {
+			try {
+				this._context.stylesheet._addRule('.' + cls + selector, name + ':' + value)
+				log('added rule for .' + cls + selector)
+			} catch(ex) {
+				//log(ex)
+			}
+		}.bind(this))
+	}
+	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'family', function(value) { this.updateProperty('font-family', value); this.parent.parent._updateSize(); })
+	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'pointSize', function(value) { this.updateProperty('font-size', value + "pt"); this.parent.parent._updateSize(); })
+	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'pixelSize', function(value) { this.updateProperty('font-size', value + "px"); this.parent.parent._updateSize(); })
+	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'italic', function(value) { this.updateProperty('font-style', value? 'italic': 'normal'); this.parent.parent._updateSize(); })
+	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'weight', function(value) { this.updateProperty('font-weight', value); this.parent.parent._updateSize(); })
+	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'bold', function(value) { this.updateProperty('font-weight', value? 'bold': 'normal'); this.parent.parent._updateSize(); })
+	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'lineHeight', function(value) { this.updateProperty('line-height', value + "px"); this.parent.parent._updateSize(); })
+	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'strike', function(value) { this.updateProperty('text-decoration', value? 'line-through': ''); this.parent._updateSize(); })
+	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'underline', function(value) { this.updateProperty('text-decoration', value? 'underline': ''); this.parent.parent._updateSize(); })
+
 //=====[component core.Loader]=====================
 
 	var LoaderBaseComponent = _globals.core.Item
@@ -2872,193 +4414,6 @@ if (!this.item && this.source)
 		this.discardItem()
 		this._load()
 	})
-
-//=====[component controls.input.BaseInput]=====================
-
-	var BaseInputBaseComponent = _globals.core.Item
-	var BaseInputBasePrototype = BaseInputBaseComponent.prototype
-
-/**
- * @constructor
- * @extends {_globals.core.Item}
- */
-	var BaseInputComponent = _globals.controls.input.BaseInput = function(parent, row) {
-		BaseInputBaseComponent.apply(this, arguments)
-	//custom constructor:
-	{
-		this._placeholderClass = ''
-		this.element.on("focus", function() { this.forceActiveFocus(); }.bind(this))
-		this.element.on("blur", function() { this.forceActiveFocus(); }.bind(this))
-	}
-
-	}
-	var BaseInputPrototype = BaseInputComponent.prototype = Object.create(BaseInputBasePrototype)
-
-	BaseInputPrototype.constructor = BaseInputComponent
-
-	BaseInputPrototype.componentName = 'controls.input.BaseInput'
-	BaseInputPrototype.fontChanged = _globals.core.createSignal('fontChanged')
-	core.addProperty(BaseInputPrototype, 'Paddings', 'paddings')
-	core.addProperty(BaseInputPrototype, 'Color', 'color', ("#000"))
-	core.addProperty(BaseInputPrototype, 'Color', 'backgroundColor', ("#fff"))
-	core.addLazyProperty(BaseInputPrototype, 'font', (function(__parent, __row) {
-		var lazy$font = new _globals.core.Font(__parent, __row)
-		var $c = { lazy$font : lazy$font }
-
-//creating component Font
-			lazy$font.$c($c.$c$lazy$font = { })
-
-
-//setting up component Font
-			var lazy$font = $c.lazy$font
-			lazy$font.$s($c.$c$lazy$font)
-			delete $c.$c$lazy$font
-
-
-
-		return lazy$font
-}))
-	core.addProperty(BaseInputPrototype, 'Border', 'border')
-	core.addProperty(BaseInputPrototype, 'string', 'type', ("text"))
-	core.addProperty(BaseInputPrototype, 'PlaceHolder', 'placeholder')
-	core.addProperty(BaseInputPrototype, 'bool', 'enabled', (true))
-/** @const @type {number} */
-	BaseInputPrototype.AlignLeft = 0
-/** @const @type {number} */
-	BaseInputComponent.AlignLeft = 0
-/** @const @type {number} */
-	BaseInputPrototype.AlignRight = 1
-/** @const @type {number} */
-	BaseInputComponent.AlignRight = 1
-/** @const @type {number} */
-	BaseInputPrototype.AlignHCenter = 2
-/** @const @type {number} */
-	BaseInputComponent.AlignHCenter = 2
-/** @const @type {number} */
-	BaseInputPrototype.Justify = 3
-/** @const @type {number} */
-	BaseInputComponent.Justify = 3
-	core.addProperty(BaseInputPrototype, 'enum', 'horizontalAlignment')
-	BaseInputPrototype._updateSize = function() {
-		var style = { width: this.width, height: this.height }
-		this.style(style)
-	}
-	BaseInputPrototype.focusBrowser = function() {
-	var focusTimer = this._get('focusTimer', true)
-
-		focusTimer.restart()
-	}
-	BaseInputPrototype.blurBrowser = function() {
-	var focusTimer = this._get('focusTimer', true)
-
-		focusTimer.stop()
-		this.element.dom.blur()
-	}
-	BaseInputPrototype.getTag = function() { return 'input' }
-	BaseInputPrototype.registerStyle = function(style) {
-		style.addRule('input', "position: absolute; visibility: inherit; border-style: solid; border-width: 0px; box-sizing: border-box;")
-		style.addRule('input:focus', "outline: none;")
-	}
-	_globals.core._protoOnChanged(BaseInputPrototype, 'recursiveVisible', function(value) {
-		if (!value)
-			this.blurBrowser()
-	})
-	_globals.core._protoOnChanged(BaseInputPrototype, 'activeFocus', function(value) {
-		if (value)
-			this.focusBrowser()
-		else
-			this.blurBrowser()
-	})
-	_globals.core._protoOnChanged(BaseInputPrototype, 'horizontalAlignment', function(value) {
-		switch(value) {
-		case this.AlignLeft:	this.style('text-align', 'left'); break
-		case this.AlignRight:	this.style('text-align', 'right'); break
-		case this.AlignHCenter:	this.style('text-align', 'center'); break
-		case this.AlignJustify:	this.style('text-align', 'justify'); break
-		}
-	})
-	_globals.core._protoOnChanged(BaseInputPrototype, 'enabled', function(value) {
-		this.element.dom.disabled = !value
-	})
-	var $code$0 = function(value) { this._updateSize() }
-	_globals.core._protoOnChanged(BaseInputPrototype, 'height', $code$0)
-	_globals.core._protoOnChanged(BaseInputPrototype, 'width', $code$0)
-	_globals.core._protoOnChanged(BaseInputPrototype, 'type', function(value) { this.element.dom.type = value })
-	_globals.core._protoOnChanged(BaseInputPrototype, 'backgroundColor', function(value) { this.style('background', value) })
-	_globals.core._protoOnChanged(BaseInputPrototype, 'color', function(value) { this.style('color', value) })
-
-	BaseInputPrototype.$c = function($c) {
-		var $this = this;
-		BaseInputBasePrototype.$c.call(this, $c.$b = { })
-var _this$child0 = new _globals.core.Timer($this)
-		$c._this$child0 = _this$child0
-
-//creating component Timer
-		_this$child0.$c($c.$c$_this$child0 = { })
-		_this$child0._setId('focusTimer')
-		$this.addChild(_this$child0)
-//creating component controls.input.<anonymous>
-		var _this$placeholder = new _globals.controls.core.PlaceHolder($this)
-		$c._this$placeholder = _this$placeholder
-
-//creating component PlaceHolder
-		_this$placeholder.$c($c.$c$_this$placeholder = { })
-
-		$this.placeholder = _this$placeholder
-//creating component controls.input.<anonymous>
-		var _this$border = new _globals.core.Border($this)
-		$c._this$border = _this$border
-
-//creating component Border
-		_this$border.$c($c.$c$_this$border = { })
-
-		$this.border = _this$border
-//creating component controls.input.<anonymous>
-		var _this$paddings = new _globals.controls.core.Paddings($this)
-		$c._this$paddings = _this$paddings
-
-//creating component Paddings
-		_this$paddings.$c($c.$c$_this$paddings = { })
-
-		$this.paddings = _this$paddings
-	}
-	BaseInputPrototype.$s = function($c) {
-		var $this = this;
-	BaseInputBasePrototype.$s.call(this, $c.$b); delete $c.$b
-//setting up component PlaceHolder
-			var _this$placeholder = $c._this$placeholder
-			_this$placeholder.$s($c.$c$_this$placeholder)
-			delete $c.$c$_this$placeholder
-
-
-
-//setting up component Border
-			var _this$border = $c._this$border
-			_this$border.$s($c.$c$_this$border)
-			delete $c.$c$_this$border
-
-
-
-//setting up component Paddings
-			var _this$paddings = $c._this$paddings
-			_this$paddings.$s($c.$c$_this$paddings)
-			delete $c.$c$_this$paddings
-
-
-
-//setting up component Timer
-			var _this$child0 = $c._this$child0
-			_this$child0.$s($c.$c$_this$child0)
-			delete $c.$c$_this$child0
-
-//assigning interval to (100)
-			_this$child0._removeUpdater('interval'); _this$child0.interval = (100);
-			_this$child0.on('triggered', function() {
-			this.parent.element.dom.focus()
-			this.parent.element.dom.select()
-		}.bind(_this$child0))
-}
-
 
 //=====[component controls.input.TextInput]=====================
 
@@ -3392,6 +4747,49 @@ var _this$child0 = new _globals.core.Loader($this)
 }
 
 
+//=====[component controls.input.TimeInput]=====================
+
+	var TimeInputBaseComponent = _globals.controls.input.BaseInput
+	var TimeInputBasePrototype = TimeInputBaseComponent.prototype
+
+/**
+ * @constructor
+ * @extends {_globals.controls.input.BaseInput}
+ */
+	var TimeInputComponent = _globals.controls.input.TimeInput = function(parent, row) {
+		TimeInputBaseComponent.apply(this, arguments)
+	//custom constructor:
+	{ this.element.on("change", function() { this.value = this.element.dom.value }.bind(this)) }
+
+	}
+	var TimeInputPrototype = TimeInputComponent.prototype = Object.create(TimeInputBasePrototype)
+
+	TimeInputPrototype.constructor = TimeInputComponent
+
+	TimeInputPrototype.componentName = 'controls.input.TimeInput'
+	core.addProperty(TimeInputPrototype, 'string', 'max')
+	core.addProperty(TimeInputPrototype, 'string', 'min')
+	core.addProperty(TimeInputPrototype, 'string', 'value')
+	_globals.core._protoOnChanged(TimeInputPrototype, 'max', function(value) { this.element.dom.max = value; })
+	_globals.core._protoOnChanged(TimeInputPrototype, 'min', function(value) { this.element.dom.min = value; })
+
+	TimeInputPrototype.$c = function($c) {
+		var $this = this;
+		TimeInputBasePrototype.$c.call(this, $c.$b = { })
+
+	}
+	TimeInputPrototype.$s = function($c) {
+		var $this = this;
+	TimeInputBasePrototype.$s.call(this, $c.$b); delete $c.$b
+//assigning width to (75)
+			$this._removeUpdater('width'); $this.width = (75);
+//assigning type to ("time")
+			$this._removeUpdater('type'); $this.type = ("time");
+//assigning height to (20)
+			$this._removeUpdater('height'); $this.height = (20);
+}
+
+
 //=====[component core.Rectangle]=====================
 
 	var RectangleBaseComponent = _globals.core.Item
@@ -3496,8 +4894,8 @@ var _this$child0 = new _globals.core.Text($this)
 
 //assigning color to ('white')
 			_this$child0._removeUpdater('color'); _this$child0.color = ('white');
-//assigning text to ('Connection error<br>Please, reload page')
-			_this$child0._removeUpdater('text'); _this$child0.text = ('Connection error<br>Please, reload page');
+//assigning text to ('Internet error<br>Please, reload page')
+			_this$child0._removeUpdater('text'); _this$child0.text = ('Internet error<br>Please, reload page');
 //assigning font.bold to (true)
 			_this$child0.font._removeUpdater('bold'); _this$child0.font.bold = (true);
 //assigning verticalAlignment to (_globals.core.Text.prototype.AlignVCenter)
@@ -3910,6 +5308,115 @@ var _this$child0 = new _globals.core.Row($this)
 		this._bindPress(value)
 	})
 
+//=====[component controls.web.Button]=====================
+
+	var ButtonBaseComponent = _globals.core.Rectangle
+	var ButtonBasePrototype = ButtonBaseComponent.prototype
+
+/**
+ * @constructor
+ * @extends {_globals.core.Rectangle}
+ */
+	var ButtonComponent = _globals.controls.web.Button = function(parent, row) {
+		ButtonBaseComponent.apply(this, arguments)
+	//custom constructor:
+	{
+		var self = this
+		this.element.on('click', function() { self.clicked() })
+	}
+
+	}
+	var ButtonPrototype = ButtonComponent.prototype = Object.create(ButtonBasePrototype)
+
+	ButtonPrototype.constructor = ButtonComponent
+
+	ButtonPrototype.componentName = 'controls.web.Button'
+	ButtonPrototype.clicked = _globals.core.createSignal('clicked')
+	core.addProperty(ButtonPrototype, 'string', 'text')
+	core.addProperty(ButtonPrototype, 'Font', 'font')
+	core.addProperty(ButtonPrototype, 'Paddings', 'paddings')
+	core.addProperty(ButtonPrototype, 'HoverMixin', 'hover')
+	core.addProperty(ButtonPrototype, 'color', 'textColor')
+	core.addProperty(ButtonPrototype, 'int', 'paintedWidth')
+	core.addProperty(ButtonPrototype, 'int', 'paintedHeight')
+	ButtonPrototype._updateSize = function() {
+		this.style({ width: 'auto', height: 'auto'}) //no need to reset it to width, it's already there
+
+		this.paintedWidth = this.element.dom.scrollWidth
+		this.paintedHeight = this.element.dom.scrollHeight
+
+		this.style({ width: this.width, height: this.height })
+	}
+	ButtonPrototype.getTag = function() { return 'button' }
+	ButtonPrototype.registerStyle = function(style,tag) {
+		style.addRule(tag, "position: absolute; visibility: inherit; text-decoration: none; border: none; outline: none; box-sizing: content-box;")
+	}
+	_globals.core._protoOnChanged(ButtonPrototype, 'text', function(value) { this.element.setHtml(value, this); this._updateSize(); })
+	_globals.core._protoOnChanged(ButtonPrototype, 'height', function(value) { this.style("height", value ); })
+	_globals.core._protoOnChanged(ButtonPrototype, 'width', function(value) { this.style("width", value); })
+	_globals.core._protoOnChanged(ButtonPrototype, 'textColor', function(value) { this.style('color', _globals.core.Color.normalize(value)); })
+
+	ButtonPrototype.$c = function($c) {
+		var $this = this;
+		ButtonBasePrototype.$c.call(this, $c.$b = { })
+//creating component controls.web.<anonymous>
+		var _this$hover = new _globals.core.HoverMixin($this)
+		$c._this$hover = _this$hover
+
+//creating component HoverMixin
+		_this$hover.$c($c.$c$_this$hover = { })
+
+		$this.hover = _this$hover
+//creating component controls.web.<anonymous>
+		var _this$font = new _globals.core.Font($this)
+		$c._this$font = _this$font
+
+//creating component Font
+		_this$font.$c($c.$c$_this$font = { })
+
+		$this.font = _this$font
+//creating component controls.web.<anonymous>
+		var _this$paddings = new _globals.controls.core.Paddings($this)
+		$c._this$paddings = _this$paddings
+
+//creating component Paddings
+		_this$paddings.$c($c.$c$_this$paddings = { })
+
+		$this.paddings = _this$paddings
+	}
+	ButtonPrototype.$s = function($c) {
+		var $this = this;
+	ButtonBasePrototype.$s.call(this, $c.$b); delete $c.$b
+//assigning width to (${paintedWidth})
+			$this._replaceUpdater('width', function() { $this.width = ($this.paintedWidth) }, [$this,'paintedWidth'])
+
+//setting up component HoverMixin
+			var _this$hover = $c._this$hover
+			_this$hover.$s($c.$c$_this$hover)
+			delete $c.$c$_this$hover
+
+//assigning cursor to ("pointer")
+			_this$hover._removeUpdater('cursor'); _this$hover.cursor = ("pointer");
+
+
+//setting up component Font
+			var _this$font = $c._this$font
+			_this$font.$s($c.$c$_this$font)
+			delete $c.$c$_this$font
+
+
+
+//setting up component Paddings
+			var _this$paddings = $c._this$paddings
+			_this$paddings.$s($c.$c$_this$paddings)
+			delete $c.$c$_this$paddings
+
+
+//assigning height to (${paintedHeight})
+			$this._replaceUpdater('height', function() { $this.height = ($this.paintedHeight) }, [$this,'paintedHeight'])
+}
+
+
 //=====[component controls.experiment.TextInputMaterial]=====================
 
 	var TextInputMaterialBaseComponent = _globals.core.Item
@@ -3929,7 +5436,7 @@ var _this$child0 = new _globals.core.Row($this)
 
 	TextInputMaterialPrototype.componentName = 'controls.experiment.TextInputMaterial'
 	core.addProperty(TextInputMaterialPrototype, 'var', 'textInput')
-	core.addProperty(TextInputMaterialPrototype, 'Color', 'materialColor', ("#E91E63"))
+	core.addProperty(TextInputMaterialPrototype, 'Color', 'materialColor', ("#009688"))
 	_globals.core._protoOnChanged(TextInputMaterialPrototype, 'materialColor', function(value) {
 	var ti = this._get('ti', true)
 
@@ -4216,8 +5723,8 @@ var _this$child0 = new _globals.core.Text($this)
 
 //assigning font.pixelSize to (${parent.height} - 25)
 			_this$child0.font._replaceUpdater('pixelSize', function() { _this$child0.font.pixelSize = (_this$child0.parent.height - 25) }, [_this$child0.parent,'height'])
-//assigning text to (_globals.qsTr(('Image JPEG Compressor')))
-			_this$child0._replaceUpdater('text', function() { _this$child0.text = (_globals.qsTr(('Image JPEG Compressor'))) }, [_this$child0._context,'language'])
+//assigning text to (_globals.qsTr(('Image Compressor')))
+			_this$child0._replaceUpdater('text', function() { _this$child0.text = (_globals.qsTr(('Image Compressor'))) }, [_this$child0._context,'language'])
 //assigning anchors.centerIn to (${parent})
 			_this$child0.anchors._removeUpdater('centerIn'); _this$child0.anchors.centerIn = (_this$child0.parent);
 //assigning font.bold to (true)
@@ -4576,409 +6083,6 @@ if (this.running && this.triggeredOnStart)
 		return this
 	}
 
-//=====[component core.BaseView]=====================
-
-	var BaseViewBaseComponent = _globals.core.BaseLayout
-	var BaseViewBasePrototype = BaseViewBaseComponent.prototype
-
-/**
- * @constructor
- * @extends {_globals.core.BaseLayout}
- */
-	var BaseViewComponent = _globals.core.BaseView = function(parent, row) {
-		BaseViewBaseComponent.apply(this, arguments)
-	//custom constructor:
-	{
-		this._items = []
-		this._modelUpdate = new _globals.core.model.ModelUpdate()
-		this._attached = null
-
-		//callback instances for dynamic model subscriptions
-		this._modelReset = this._onReset.bind(this)
-		this._modelRowsInserted = this._onRowsInserted.bind(this)
-		this._modelRowsChanged = this._onRowsChanged.bind(this)
-		this._modelRowsRemoved =  this._onRowsRemoved.bind(this)
-	}
-
-	}
-	var BaseViewPrototype = BaseViewComponent.prototype = Object.create(BaseViewBasePrototype)
-
-	BaseViewPrototype.constructor = BaseViewComponent
-
-	BaseViewPrototype.componentName = 'core.BaseView'
-	BaseViewPrototype.layoutFinished = _globals.core.createSignal('layoutFinished')
-	core.addProperty(BaseViewPrototype, 'Object', 'model')
-	core.addProperty(BaseViewPrototype, 'Item', 'delegate')
-	core.addProperty(BaseViewPrototype, 'int', 'contentX')
-	core.addProperty(BaseViewPrototype, 'int', 'contentY')
-	core.addProperty(BaseViewPrototype, 'int', 'scrollingStep', (0))
-	core.addProperty(BaseViewPrototype, 'int', 'animationDuration', (0))
-	core.addProperty(BaseViewPrototype, 'string', 'animationEasing', ("ease"))
-	core.addProperty(BaseViewPrototype, 'bool', 'contentFollowsCurrentItem', (true))
-	core.addProperty(BaseViewPrototype, 'bool', 'nativeScrolling')
-	core.addProperty(BaseViewPrototype, 'real', 'prerender', (0.5))
-	core.addProperty(BaseViewPrototype, 'string', 'visibilityProperty')
-	core.addProperty(BaseViewPrototype, 'BaseViewContent', 'content')
-/** @const @type {number} */
-	BaseViewPrototype.Contain = 0
-/** @const @type {number} */
-	BaseViewComponent.Contain = 0
-/** @const @type {number} */
-	BaseViewPrototype.Beginning = 1
-/** @const @type {number} */
-	BaseViewComponent.Beginning = 1
-/** @const @type {number} */
-	BaseViewPrototype.Center = 2
-/** @const @type {number} */
-	BaseViewComponent.Center = 2
-/** @const @type {number} */
-	BaseViewPrototype.End = 3
-/** @const @type {number} */
-	BaseViewComponent.End = 3
-/** @const @type {number} */
-	BaseViewPrototype.Visible = 4
-/** @const @type {number} */
-	BaseViewComponent.Visible = 4
-/** @const @type {number} */
-	BaseViewPrototype.Page = 5
-/** @const @type {number} */
-	BaseViewComponent.Page = 5
-	core.addProperty(BaseViewPrototype, 'enum', 'positionMode')
-	BaseViewPrototype.discard = function() {
-		this._detach()
-		_globals.core.BaseLayout.prototype.discard.apply(this)
-	}
-	BaseViewPrototype._processUpdates = function() {
-		this._modelUpdate.apply(this)
-		qml.core.BaseLayout.prototype._processUpdates.apply(this)
-		this.count = this._items.length
-	}
-	BaseViewPrototype.focusCurrent = function() {
-		var n = this.count
-		if (n == 0)
-			return
-
-		var idx = this.currentIndex
-		if (idx < 0 || idx >= n) {
-			if (this.keyNavigationWraps)
-				this.currentIndex = (idx + n) % n
-			else
-				this.currentIndex = idx < 0? 0: n - 1
-			return
-		}
-		var item = this._items[idx]
-
-		if (item)
-			this.focusChild(item)
-		if (this.contentFollowsCurrentItem)
-			this.positionViewAtIndex(idx)
-	}
-	BaseViewPrototype._attach = function() {
-	var model = this._get('model', true)
-
-		if (this._attached || !this.model || !this.delegate)
-			return
-
-		if (this.trace)
-			log('attaching model...')
-
-		var Model = _globals.core.Model
-		var model = this.model
-		var modelType = typeof model
-
-		if ((Model !== undefined) && (model instanceof Model)) {
-		} else if (Array.isArray(model)) {
-			model = new _globals.core.model.ArrayModelWrapper(model)
-		} else if (modelType === 'number') {
-			var data = []
-			for(var i = 0; i < model; ++i)
-				data.push({})
-			model = new _globals.core.model.ArrayModelWrapper(data)
-		} else
-			throw new Error("unknown value of type '" + (typeof model) + "', attached to model property: " + model + ((modelType === 'object') && ('componentName' in model)? ', component name: ' + model.componentName: ''))
-
-		model.on('reset', this._modelReset)
-		model.on('rowsInserted', this._modelRowsInserted)
-		model.on('rowsChanged', this._modelRowsChanged)
-		model.on('rowsRemoved', this._modelRowsRemoved)
-
-		this._attached = model
-		this._onReset()
-	}
-	BaseViewPrototype._detach = function() {
-	var model = this._get('model', true)
-
-		var model = this._attached
-		if (!model)
-			return
-
-		if (this.trace)
-			log('detaching model...')
-
-		this._attached = null
-
-		model.removeListener('reset', this._modelReset)
-		model.removeListener('rowsInserted', this._modelRowsInserted)
-		model.removeListener('rowsChanged', this._modelRowsChanged)
-		model.removeListener('rowsRemoved', this._modelRowsRemoved)
-	}
-	BaseViewPrototype._onReset = function() {
-	var model = this._get('model', true)
-
-		var model = this._attached
-		if (this.trace)
-			log("reset", this._items.length, model.count)
-
-		this._modelUpdate.reset(model)
-		this._scheduleLayout()
-	}
-	BaseViewPrototype.__complete = function() { BaseViewBasePrototype.__complete.call(this)
-var self = this
-		this.element.on('scroll', function(event) {
-			self._updateScrollPositions(self.element.dom.scrollLeft, self.element.dom.scrollTop)
-		}.bind(this)) }
-	BaseViewPrototype._updateItems = function(begin,end) {
-		for(var i = begin; i < end; ++i)
-			this._updateDelegate(i)
-	}
-	BaseViewPrototype._onRowsChanged = function(begin,end) {
-		if (this.trace)
-			log("rows changed", begin, end)
-
-		this._modelUpdate.update(this._attached, begin, end)
-		this._scheduleLayout()
-	}
-	BaseViewPrototype._onRowsInserted = function(begin,end) {
-		if (this.trace)
-			log("rows inserted", begin, end)
-
-		this._modelUpdate.insert(this._attached, begin, end)
-		this._scheduleLayout()
-	}
-	BaseViewPrototype._onRowsRemoved = function(begin,end) {
-		if (this.trace)
-			log("rows removed", begin, end)
-
-		this._modelUpdate.remove(this._attached, begin, end)
-		this._scheduleLayout()
-	}
-	BaseViewPrototype._removeItems = function(begin,end) {
-		var deleted = this._items.splice(begin, end - begin)
-		var view = this
-		deleted.forEach(function(item) { view._discardItem(item)})
-	}
-	BaseViewPrototype._insertItems = function(begin,end) {
-		var n = end - begin + 2
-		var args = new Array(n)
-		args[0] = begin
-		args[1] = 0
-		for(var i = 2; i < n; ++i)
-			args[i] = null
-		Array.prototype.splice.apply(this._items, args)
-	}
-	BaseViewPrototype._updateDelegateIndex = function(idx) {
-		var item = this._items[idx]
-		if (item) {
-			item._local.model.index = idx
-			var _rowIndex = item._createPropertyStorage('_rowIndex')
-			_rowIndex.callOnChanged(item, '_rowIndex')
-		}
-	}
-	BaseViewPrototype._updateDelegate = function(idx) {
-		var item = this._items[idx]
-		if (item) {
-			var row = this._attached.get(idx)
-			row.index = idx
-			item._local.model = row
-			var _row = item._createPropertyStorage('_row')
-			_row.callOnChanged(item, '_row')
-		}
-	}
-	BaseViewPrototype._createDelegate = function(idx) {
-		var items = this._items
-		var item = items[idx]
-		if (item !== null && item !== undefined)
-			return item
-
-		var visibilityProperty = this.visibilityProperty
-		var row = this._attached.get(idx)
-
-		if (this.trace)
-			log('createDelegate', idx, row)
-
-		if (visibilityProperty && !row[visibilityProperty])
-			return null;
-		row.index = idx
-
-		item = this.delegate(this, row)
-		items[idx] = item
-		item.view = this
-		item.element.remove()
-		this.content.element.append(item.element)
-
-		item.recursiveVisible = this.recursiveVisible && item.visible && item.visibleInView
-
-		return item
-	}
-	BaseViewPrototype._discardItem = function(item) {
-		if (item === null)
-			return
-		if (this.focusedChild === item)
-			this.focusedChild = null;
-		item.discard()
-	}
-	BaseViewPrototype.itemAt = function(x,y) {
-		var idx = this.indexAt(x, y)
-		return idx >= 0? this._items[idx]: null
-	}
-	BaseViewPrototype._updateScrollPositions = function(x,y,layout) {
-		this._setProperty('contentX', x)
-		this._setProperty('contentY', y)
-		this.content._updateScrollPositions(x, y, layout)
-	}
-	_globals.core._protoOnChanged(BaseViewPrototype, 'model', function(value) {
-		if (this.trace)
-			log('model changed to ', value)
-
-		this._detach()
-		this._modelUpdate.clear()
-		this._removeItems(0, this.count)
-		this.count = 0
-		this._scheduleLayout()
-	})
-	_globals.core._protoOnChanged(BaseViewPrototype, 'recursiveVisible', function(value) {
-		if (value)
-			this._scheduleLayout();
-
-		var view = this
-		this._items.forEach(function(child) {
-			if (child !== null)
-				view._updateVisibilityForChild(child, value)
-		})
-		this._updateVisibilityForChild(this.content, value)
-	})
-	_globals.core._protoOnChanged(BaseViewPrototype, 'delegate', function(value) {
-		if (value)
-			value.visible = false
-	})
-	_globals.core._protoOnChanged(BaseViewPrototype, 'currentIndex', function(value) {
-		this.focusCurrent()
-	})
-	_globals.core._protoOnChanged(BaseViewPrototype, 'focusedChild', function(value) {
-		var idx = this._items.indexOf(this.focusedChild)
-		if (idx >= 0)
-			this.currentIndex = idx
-	})
-	var $code$0 = function(value) { this._scheduleLayout() }
-	_globals.core._protoOnChanged(BaseViewPrototype, 'height', $code$0)
-	_globals.core._protoOnChanged(BaseViewPrototype, 'width', $code$0)
-	_globals.core._protoOnChanged(BaseViewPrototype, 'contentX', function(value) { this.content.x = -value; })
-	_globals.core._protoOnChanged(BaseViewPrototype, 'contentY', function(value) { this.content.y = -value; })
-
-	BaseViewPrototype.$c = function($c) {
-		var $this = this;
-		BaseViewBasePrototype.$c.call(this, $c.$b = { })
-//creating component core.<anonymous>
-		var _this$content = new _globals.core.BaseViewContent($this)
-		$c._this$content = _this$content
-
-//creating component BaseViewContent
-		_this$content.$c($c.$c$_this$content = { })
-
-		$this.content = _this$content
-//creating component core.<anonymous>
-		var _this$model = new _globals.core.ListModel($this)
-		$c._this$model = _this$model
-
-//creating component ListModel
-		_this$model.$c($c.$c$_this$model = { })
-
-		$this.model = _this$model
-	}
-	BaseViewPrototype.$s = function($c) {
-		var $this = this;
-	BaseViewBasePrototype.$s.call(this, $c.$b); delete $c.$b
-//assigning keyNavigationWraps to (true)
-			$this._removeUpdater('keyNavigationWraps'); $this.keyNavigationWraps = (true);
-
-//setting up component BaseViewContent
-			var _this$content = $c._this$content
-			_this$content.$s($c.$c$_this$content)
-			delete $c.$c$_this$content
-
-	var behavior__this_content_on_y = new _globals.core.Animation(_this$content)
-	var behavior__this_content_on_y$c = { behavior__this_content_on_y: behavior__this_content_on_y }
-
-//creating component Animation
-	behavior__this_content_on_y.$c(behavior__this_content_on_y$c.$c$behavior__this_content_on_y = { })
-
-
-//setting up component Animation
-	var behavior__this_content_on_y = behavior__this_content_on_y$c.behavior__this_content_on_y
-	behavior__this_content_on_y.$s(behavior__this_content_on_y$c.$c$behavior__this_content_on_y)
-	delete behavior__this_content_on_y$c.$c$behavior__this_content_on_y
-
-//assigning duration to (${parent.parent.animationDuration})
-	behavior__this_content_on_y._replaceUpdater('duration', function() { behavior__this_content_on_y.duration = (behavior__this_content_on_y.parent.parent.animationDuration) }, [behavior__this_content_on_y.parent.parent,'animationDuration'])
-//assigning easing to (${parent.parent.animationEasing})
-	behavior__this_content_on_y._replaceUpdater('easing', function() { behavior__this_content_on_y.easing = (behavior__this_content_on_y.parent.parent.animationEasing) }, [behavior__this_content_on_y.parent.parent,'animationEasing'])
-
-	_this$content.setAnimation('y', behavior__this_content_on_y);
-
-	var behavior__this_content_on_x = new _globals.core.Animation(_this$content)
-	var behavior__this_content_on_x$c = { behavior__this_content_on_x: behavior__this_content_on_x }
-
-//creating component Animation
-	behavior__this_content_on_x.$c(behavior__this_content_on_x$c.$c$behavior__this_content_on_x = { })
-
-
-//setting up component Animation
-	var behavior__this_content_on_x = behavior__this_content_on_x$c.behavior__this_content_on_x
-	behavior__this_content_on_x.$s(behavior__this_content_on_x$c.$c$behavior__this_content_on_x)
-	delete behavior__this_content_on_x$c.$c$behavior__this_content_on_x
-
-//assigning duration to (${parent.parent.animationDuration})
-	behavior__this_content_on_x._replaceUpdater('duration', function() { behavior__this_content_on_x.duration = (behavior__this_content_on_x.parent.parent.animationDuration) }, [behavior__this_content_on_x.parent.parent,'animationDuration'])
-//assigning easing to (${parent.parent.animationEasing})
-	behavior__this_content_on_x._replaceUpdater('easing', function() { behavior__this_content_on_x.easing = (behavior__this_content_on_x.parent.parent.animationEasing) }, [behavior__this_content_on_x.parent.parent,'animationEasing'])
-
-	_this$content.setAnimation('x', behavior__this_content_on_x);
-
-	var behavior__this_content_on_transform = new _globals.core.Animation(_this$content)
-	var behavior__this_content_on_transform$c = { behavior__this_content_on_transform: behavior__this_content_on_transform }
-
-//creating component Animation
-	behavior__this_content_on_transform.$c(behavior__this_content_on_transform$c.$c$behavior__this_content_on_transform = { })
-
-
-//setting up component Animation
-	var behavior__this_content_on_transform = behavior__this_content_on_transform$c.behavior__this_content_on_transform
-	behavior__this_content_on_transform.$s(behavior__this_content_on_transform$c.$c$behavior__this_content_on_transform)
-	delete behavior__this_content_on_transform$c.$c$behavior__this_content_on_transform
-
-//assigning duration to (${parent.parent.animationDuration})
-	behavior__this_content_on_transform._replaceUpdater('duration', function() { behavior__this_content_on_transform.duration = (behavior__this_content_on_transform.parent.parent.animationDuration) }, [behavior__this_content_on_transform.parent.parent,'animationDuration'])
-//assigning easing to (${parent.parent.animationEasing})
-	behavior__this_content_on_transform._replaceUpdater('easing', function() { behavior__this_content_on_transform.easing = (behavior__this_content_on_transform.parent.parent.animationEasing) }, [behavior__this_content_on_transform.parent.parent,'animationEasing'])
-
-	_this$content.setAnimation('transform', behavior__this_content_on_transform);
-
-//assigning contentWidth to (1)
-			$this._removeUpdater('contentWidth'); $this.contentWidth = (1);
-
-//setting up component ListModel
-			var _this$model = $c._this$model
-			_this$model.$s($c.$c$_this$model)
-			delete $c.$c$_this$model
-
-
-//assigning contentHeight to (1)
-			$this._removeUpdater('contentHeight'); $this.contentHeight = (1);
-//assigning handleNavigationKeys to (true)
-			$this._removeUpdater('handleNavigationKeys'); $this.handleNavigationKeys = (true);
-}
-
-
 //=====[component core.Effects]=====================
 
 	var EffectsBaseComponent = _globals.core.Object
@@ -5063,288 +6167,6 @@ var self = this
 	_globals.core._protoOnChanged(EffectsPrototype, 'hueRotate', $code$0)
 	_globals.core._protoOnChanged(EffectsPrototype, 'contrast', $code$0)
 	_globals.core._protoOnChanged(EffectsPrototype, 'blur', $code$0)
-
-//=====[component core.GridView]=====================
-
-	var GridViewBaseComponent = _globals.core.BaseView
-	var GridViewBasePrototype = GridViewBaseComponent.prototype
-
-/**
- * @constructor
- * @extends {_globals.core.BaseView}
- */
-	var GridViewComponent = _globals.core.GridView = function(parent, row) {
-		GridViewBaseComponent.apply(this, arguments)
-
-	}
-	var GridViewPrototype = GridViewComponent.prototype = Object.create(GridViewBasePrototype)
-
-	GridViewPrototype.constructor = GridViewComponent
-
-	GridViewPrototype.componentName = 'core.GridView'
-	core.addProperty(GridViewPrototype, 'int', 'cellWidth', (100))
-	core.addProperty(GridViewPrototype, 'int', 'cellHeight', (100))
-	core.addProperty(GridViewPrototype, 'int', 'rows')
-	core.addProperty(GridViewPrototype, 'int', 'columns')
-/** @const @type {number} */
-	GridViewPrototype.FlowLeftToRight = 0
-/** @const @type {number} */
-	GridViewComponent.FlowLeftToRight = 0
-/** @const @type {number} */
-	GridViewPrototype.FlowTopToBottom = 1
-/** @const @type {number} */
-	GridViewComponent.FlowTopToBottom = 1
-	core.addProperty(GridViewPrototype, 'enum', 'flow')
-	GridViewPrototype._updateOverflow = function() {
-		if (!this.nativeScrolling)
-			return
-
-		var horizontal = this.flow !== this.FlowLeftToRight
-		var style = {}
-		if (horizontal) {
-			style['overflow-x'] = 'auto'
-			style['overflow-y'] = 'hidden'
-		} else {
-			style['overflow-x'] = 'hidden'
-			style['overflow-y'] = 'auto'
-		}
-		this.style(style)
-	}
-	GridViewPrototype._layout = function() {
-	var model = this._get('model', true)
-
-		if (!this.recursiveVisible && !this.offlineLayout)
-			return
-
-		var model = this._attached;
-		if (!model) {
-			this.layoutFinished()
-			return
-		}
-
-		this.count = model.count
-		if (!this.count) {
-			this.layoutFinished()
-			return
-		}
-
-		var horizontal = this.flow == this.FlowLeftToRight
-
-		var items = this._items
-		var n = items.length
-		var w = this.width, h = this.height
-		if (this.trace)
-			log("layout " + n + " into " + w + "x" + h + " @ " + this.content.x + "," + this.content.y)
-		var created = false
-		var x = 0, y = 0
-		var cx = this.content.x, cy = this.content.y
-
-		var atEnd = horizontal? function() { return cy + y >= h }: function() { return cx + x >= w }
-
-		var itemsCount = 0
-		var cellWidth = this.cellWidth, cellHeight = this.cellHeight
-		var stepX = cellWidth + this.spacing, stepY = cellHeight + this.spacing
-		for(var i = 0; i < n && !atEnd(); ++i) {
-			var item = this._items[i]
-
-			if (!item) {
-				item = this._createDelegate(i)
-				if (item)
-					created = true
-			}
-
-			++itemsCount
-
-			if (item) {
-				item.viewX = x
-				item.viewY = y
-			}
-
-			if (item) {
-				if (this.currentIndex === i && !item.focused) {
-					this.focusChild(item)
-					if (this.contentFollowsCurrentItem)
-						this.positionViewAtIndex(i)
-				}
-
-				var visible = horizontal? (cy + y + item.height >= 0 && cy + y < h): (cx + x + item.width >= 0 && cx + x < w)
-				item.visibleInView = visible
-			}
-
-			if (horizontal) {
-				x += stepX
-				if (x > 0 && x + cellWidth > w) {
-					x = 0
-					y += stepY
-				}
-			} else {
-				y += stepY
-				if (y > 0 && y + cellHeight > h) {
-					y = 0
-					x += stepX
-				}
-			}
-		}
-		for(; i < n; ++i) {
-			var item = items[i]
-			if (item)
-				item.visibleInView = false
-		}
-
-		if (!horizontal) {
-			this.rows = Math.floor((h + this.spacing) / (this.cellHeight + this.spacing))
-			this.columns = Math.floor((n + this.rows - 1) / this.rows)
-			this.contentWidth = this.content.width = this.columns * (this.cellWidth + this.spacing) - this.spacing
-			this.contentHeight = this.content.height = this.rows * (this.cellHeight + this.spacing) - this.spacing
-		} else {
-			this.columns = Math.floor((w + this.spacing ) / (this.cellWidth + this.spacing))
-			this.rows = Math.floor((n + this.columns - 1) / this.columns)
-			this.contentWidth = this.content.width = this.columns * (this.cellWidth + this.spacing) - this.spacing
-			this.contentHeight = this.content.height = this.rows * (this.cellHeight + this.spacing) - this.spacing
-		}
-		//log(horizontal, w, h, this.rows, this.columns, this.currentIndex, this.contentWidth + "x" + this.contentHeight)
-		this.layoutFinished()
-		if (created)
-			this._context.scheduleComplete()
-	}
-	GridViewPrototype.__complete = function() { GridViewBasePrototype.__complete.call(this)
-this._updateOverflow() }
-	GridViewPrototype.move = function(dx,dy) {
-		var horizontal = this.flow == this.FlowLeftToRight
-		var x, y
-		if (horizontal && this.contentHeight > this.height) {
-			y = this.contentY + dy
-			if (y < 0)
-				y = 0
-			else if (y > this.contentHeight - this.height)
-				y = this.contentHeight - this.height
-			this.contentY = y
-		} else if (!horizontal && this.contentWidth > this.width) {
-			x = this.contentX + dx
-			if (x < 0)
-				x = 0
-			else if (x > this.contentWidth - this.width)
-				x = this.contentWidth - this.width
-			this.contentX = x
-		}
-	}
-	GridViewPrototype.positionViewAtIndex = function(idx) {
-		var cx = this.contentX, cy = this.contentY
-		var itemBox = this.getItemPosition(idx)
-		var x = itemBox[0], y = itemBox[1]
-		var iw = itemBox[2], ih = itemBox[3]
-		var w = this.width, h = this.height
-		var horizontal = this.flow == this.FlowLeftToRight
-		if (!horizontal) {
-			if (iw > w) {
-				this.contentX = x - w / 2 + iw / 2
-				return
-			}
-			if (x - cx < 0)
-				this.contentX = x
-			else if (x - cx + iw > w)
-				this.contentX = x + iw - w
-		} else {
-			if (ih > h) {
-				this.contentY = y - h / 2 + ih / 2
-				return
-			}
-			if (y - cy < 0)
-				this.contentY = y
-			else if (y - cy + ih > h)
-				this.contentY = y + ih - h
-		}
-	}
-	GridViewPrototype.getItemPosition = function(idx) {
-		var horizontal = this.flow == this.FlowLeftToRight
-		var x, y, cw = this.cellWidth, ch = this.cellHeight
-		if (horizontal) {
-			if (this.columns == 0)
-				return [0, 0, 0, 0]
-			x = (idx % this.columns) * cw
-			y = Math.floor(idx / this.columns) * ch
-		} else {
-			if (this.rows == 0)
-				return [0, 0, 0, 0]
-			x = Math.floor(idx / this.rows) * cw
-			y = (idx % this.rows) * ch
-		}
-		return [x, y, cw, ch]
-	}
-	GridViewPrototype.indexAt = function(x,y) {
-		x -= this.content.x
-		y -= this.content.y
-		var horizontal = this.flow == this.FlowLeftToRight
-		x = Math.floor(x / (this.cellWidth + this.spacing))
-		y = Math.floor(y / (this.cellHeight + this.spacing))
-		if (!horizontal) {
-			return x * this.rows + y
-		} else {
-			return y * this.columns + x
-		}
-	}
-	var $code$0 = function(value) {
-		this._scheduleLayout()
-	}
-	_globals.core._protoOnChanged(GridViewPrototype, 'cellWidth', $code$0)
-	_globals.core._protoOnChanged(GridViewPrototype, 'cellHeight', $code$0)
-	_globals.core._protoOnChanged(GridViewPrototype, 'flow', function(value) {
-		this._updateOverflow()
-		this._scheduleLayout()
-	})
-	_globals.core._protoOnKey(GridViewPrototype, 'Key', function(key,event) {
-		if (!this.handleNavigationKeys)
-			return false;
-
-		var horizontal = this.flow == this.FlowLeftToRight
-		if (horizontal) {
-			switch(key) {
-				case 'Left':
-					if (!this.keyNavigationWraps && this.currentIndex == 0)
-						return false
-					--this.currentIndex
-					return true
-				case 'Right':
-					if (!this.keyNavigationWraps && this.currentIndex == this.columns - 1)
-						return false
-					++this.currentIndex
-					return true
-				case 'Up':
-					if (!this.keyNavigationWraps && this.currentIndex < this.columns)
-						return false
-					this.currentIndex -= this.columns
-					return true
-				case 'Down':
-					if (!this.keyNavigationWraps && this.currentIndex > this.count - this.columns + 1)
-						return false
-					this.currentIndex += this.columns
-					return true
-			}
-		} else {
-			switch(key) {
-				case 'Up':
-					if (!this.keyNavigationWraps && this.currentIndex == 0)
-						return false
-					--this.currentIndex
-					return true
-				case 'Down':
-					if (!this.keyNavigationWraps && this.currentIndex == this.columns - 1)
-						return false
-					++this.currentIndex
-					return true
-				case 'Left':
-					if (!this.keyNavigationWraps && this.currentIndex < this.rows)
-						return false
-					this.currentIndex -= this.rows
-					return true
-				case 'Right':
-					if (!this.keyNavigationWraps && this.currentIndex > this.count - this.rows + 1)
-						return false
-					this.currentIndex += this.rows
-					return true
-			}
-		}
-	})
 
 //=====[component core.LocalStorage]=====================
 
@@ -5456,6 +6278,10 @@ this._updateOverflow() }
  */
 	var UiCompressComponent = _globals.src.UiCompress = function(parent, row) {
 		UiCompressBaseComponent.apply(this, arguments)
+	//custom constructor:
+	{
+        this.serverUrl = window.location.href.includes('file') ? 'http://localhost:3000/' : './'
+    }
 
 	}
 	var UiCompressPrototype = UiCompressComponent.prototype = Object.create(UiCompressBasePrototype)
@@ -5501,10 +6327,8 @@ var _this$child0 = new _globals.src.IToolBar($this)
 	UiCompressPrototype.$s = function($c) {
 		var $this = this;
 	UiCompressBasePrototype.$s.call(this, $c.$b); delete $c.$b
-//assigning serverUrl to ('https://dny.pp.ua/compress/')
-			$this._removeUpdater('serverUrl'); $this.serverUrl = ('https://dny.pp.ua/compress/');
-//assigning title to (_globals.qsTr(('Image JPEG Compressor')))
-			$this._replaceUpdater('title', function() { $this.title = (_globals.qsTr(('Image JPEG Compressor'))) }, [$this._context,'language'])
+//assigning title to (_globals.qsTr(('Image Compressor')))
+			$this._replaceUpdater('title', function() { $this.title = (_globals.qsTr(('Image Compressor'))) }, [$this._context,'language'])
 
 //setting up component IToolBar
 			var _this$child0 = $c._this$child0
@@ -5541,6 +6365,11 @@ var _this$child0 = new _globals.src.IToolBar($this)
 			var _this$child3 = $c._this$child3
 			_this$child3.$s($c.$c$_this$child3)
 			delete $c.$c$_this$child3
+
+//assigning fixed to (true)
+			_this$child3._removeUpdater('fixed'); _this$child3.fixed = (true);
+//assigning anchors.fill to (${parent})
+			_this$child3.anchors._removeUpdater('fill'); _this$child3.anchors.fill = (_this$child3.parent);
 }
 
 
@@ -6297,55 +7126,12 @@ var _this$child0 = new _globals.src.CompressInput($this)
 		_this$child0.$c($c.$c$_this$child0 = { })
 
 		$this.addChild(_this$child0)
-		var _this$child1 = new _globals.core.Row($this)
+		var _this$child1 = new _globals.src.Filtres($this)
 		$c._this$child1 = _this$child1
 
-//creating component Row
+//creating component Filtres
 		_this$child1.$c($c.$c$_this$child1 = { })
-	core.addProperty(_this$child1, 'bool', 'isSearch')
-		var _this_child1$child0 = new _globals.core.Text(_this$child1)
-		$c._this_child1$child0 = _this_child1$child0
 
-//creating component Text
-		_this_child1$child0.$c($c.$c$_this_child1$child0 = { })
-
-		_this$child1.addChild(_this_child1$child0)
-		var _this_child1$child1 = new _globals.controls.experiment.TextInputMaterial(_this$child1)
-		$c._this_child1$child1 = _this_child1$child1
-
-//creating component TextInputMaterial
-		_this_child1$child1.$c($c.$c$_this_child1$child1 = { })
-		_this_child1$child1._setId('filterName')
-		_this$child1.addChild(_this_child1$child1)
-		var _this_child1$child2 = new _globals.core.Text(_this$child1)
-		$c._this_child1$child2 = _this_child1$child2
-
-//creating component Text
-		_this_child1$child2.$c($c.$c$_this_child1$child2 = { })
-
-		_this$child1.addChild(_this_child1$child2)
-		var _this_child1$child3 = new _globals.controls.experiment.TextInputMaterial(_this$child1)
-		$c._this_child1$child3 = _this_child1$child3
-
-//creating component TextInputMaterial
-		_this_child1$child3.$c($c.$c$_this_child1$child3 = { })
-		_this_child1$child3._setId('filterSize')
-		_this$child1.addChild(_this_child1$child3)
-		var _this_child1$child4 = new _globals.core.Text(_this$child1)
-		$c._this_child1$child4 = _this_child1$child4
-
-//creating component Text
-		_this_child1$child4.$c($c.$c$_this_child1$child4 = { })
-
-		_this$child1.addChild(_this_child1$child4)
-		var _this_child1$child5 = new _globals.controls.experiment.TextInputMaterial(_this$child1)
-		$c._this_child1$child5 = _this_child1$child5
-
-//creating component TextInputMaterial
-		_this_child1$child5.$c($c.$c$_this_child1$child5 = { })
-		_this_child1$child5._setId('filterDate')
-		_this$child1.addChild(_this_child1$child5)
-		_this$child1._setId('filters')
 		$this.addChild(_this$child1)
 		var _this$child2 = new _globals.core.Text($this)
 		$c._this$child2 = _this$child2
@@ -6354,146 +7140,13 @@ var _this$child0 = new _globals.src.CompressInput($this)
 		_this$child2.$c($c.$c$_this$child2 = { })
 
 		$this.addChild(_this$child2)
-		var _this$child3 = new _globals.controls.experiment.NetworkRequest($this)
+		var _this$child3 = new _globals.src.Gallery($this)
 		$c._this$child3 = _this$child3
 
-//creating component NetworkRequest
+//creating component Gallery
 		_this$child3.$c($c.$c$_this$child3 = { })
-		_this$child3._setId('imagesRequest')
+
 		$this.addChild(_this$child3)
-		var _this$child4 = new _globals.core.GridView($this)
-		$c._this$child4 = _this$child4
-
-//creating component GridView
-		_this$child4.$c($c.$c$_this$child4 = { })
-//creating component src.<anonymous>
-		var _this_child4$model = new _globals.core.ProxyModel(_this$child4)
-		$c._this_child4$model = _this_child4$model
-
-//creating component ProxyModel
-		_this_child4$model.$c($c.$c$_this_child4$model = { })
-		_this_child4$model._setId('proxyModel')
-//creating component src.<anonymous>
-		var _this_child4_model$target = new _globals.core.ListModel(_this_child4$model)
-		$c._this_child4_model$target = _this_child4_model$target
-
-//creating component ListModel
-		_this_child4_model$target.$c($c.$c$_this_child4_model$target = { })
-		_this_child4_model$target._setId('imagesModel')
-		_this_child4$model.target = _this_child4_model$target
-		_this$child4.model = _this_child4$model
-		_this$child4.delegate = (function(__parent, __row) {
-		var delegate = new _globals.core.Image(__parent, __row)
-		var $c = { delegate : delegate }
-
-//creating component Image
-			delegate.$c($c.$c$delegate = { })
-	core.addProperty(delegate, 'string', 'imageUrl')
-			var delegate$child0 = new _globals.core.HoverMixin(delegate)
-			$c.delegate$child0 = delegate$child0
-
-//creating component HoverMixin
-			delegate$child0.$c($c.$c$delegate$child0 = { })
-			delegate$child0._setId('hover')
-			delegate.addChild(delegate$child0)
-			var delegate$child1 = new _globals.core.MousePressMixin(delegate)
-			$c.delegate$child1 = delegate$child1
-
-//creating component MousePressMixin
-			delegate$child1.$c($c.$c$delegate$child1 = { })
-
-			delegate.addChild(delegate$child1)
-			var delegate$child2 = new _globals.core.Rectangle(delegate)
-			$c.delegate$child2 = delegate$child2
-
-//creating component Rectangle
-			delegate$child2.$c($c.$c$delegate$child2 = { })
-			var delegate_child2$child0 = new _globals.core.Text(delegate$child2)
-			$c.delegate_child2$child0 = delegate_child2$child0
-
-//creating component Text
-			delegate_child2$child0.$c($c.$c$delegate_child2$child0 = { })
-
-			delegate$child2.addChild(delegate_child2$child0)
-			delegate.addChild(delegate$child2)
-			delegate._setId('image')
-
-//setting up component Image
-			var delegate = $c.delegate
-			delegate.$s($c.$c$delegate)
-			delete $c.$c$delegate
-
-//assigning source to (${imageUrl})
-			delegate._replaceUpdater('source', function() { delegate.source = (delegate.imageUrl) }, [delegate,'imageUrl'])
-//assigning imageUrl to (${webApp.serverUrl} + 'images/' + ${model.file})
-			delegate._replaceUpdater('imageUrl', function() { delegate.imageUrl = (delegate._get('webApp').serverUrl + 'images/' + delegate._get('model').file) }, [delegate._get('_delegate'),'_row',delegate._get('webApp'),'serverUrl'])
-//assigning height to (200)
-			delegate._removeUpdater('height'); delegate.height = (200);
-//assigning width to (200)
-			delegate._removeUpdater('width'); delegate.width = (200);
-//assigning fillMode to (_globals.core.Image.prototype.PreserveAspectCrop)
-			delegate._removeUpdater('fillMode'); delegate.fillMode = (_globals.core.Image.prototype.PreserveAspectCrop);
-
-//setting up component HoverMixin
-			var delegate$child0 = $c.delegate$child0
-			delegate$child0.$s($c.$c$delegate$child0)
-			delete $c.$c$delegate$child0
-
-
-
-//setting up component MousePressMixin
-			var delegate$child1 = $c.delegate$child1
-			delegate$child1.$s($c.$c$delegate$child1)
-			delete $c.$c$delegate$child1
-
-			delegate$child1.onChanged('pressed', function(value) {
-	var image = this._get('image', true), model = this._get('model', true)
-
-                    if (value) window.open(image.imageUrl, '_blank') // console.log(value, model.url)
-                }.bind(delegate$child1))
-
-
-//setting up component Rectangle
-			var delegate$child2 = $c.delegate$child2
-			delegate$child2.$s($c.$c$delegate$child2)
-			delete $c.$c$delegate$child2
-
-//assigning opacity to (0.8)
-			delegate$child2._removeUpdater('opacity'); delegate$child2.opacity = (0.8);
-//assigning color to ('white')
-			delegate$child2._removeUpdater('color'); delegate$child2.color = ('white');
-//assigning anchors.margins to (10)
-			delegate$child2.anchors._removeUpdater('margins'); delegate$child2.anchors.margins = (10);
-//assigning visible to (${hover.value})
-			delegate$child2._replaceUpdater('visible', function() { delegate$child2.visible = (delegate$child2._get('hover').value) }, [delegate$child2._get('hover'),'value'])
-//assigning radius to (5)
-			delegate$child2._removeUpdater('radius'); delegate$child2.radius = (5);
-//assigning anchors.fill to (${parent})
-			delegate$child2.anchors._removeUpdater('fill'); delegate$child2.anchors.fill = (delegate$child2.parent);
-
-//setting up component Text
-			var delegate_child2$child0 = $c.delegate_child2$child0
-			delegate_child2$child0.$s($c.$c$delegate_child2$child0)
-			delete $c.$c$delegate_child2$child0
-
-//assigning text to ("<b>" + ${model.name} + "</b><br><br><b>" + ${model.compress_size} + "</b> MB<br>(original: <b>" + ${model.original_size} + "</b> MB)")
-			delegate_child2$child0._replaceUpdater('text', function() { delegate_child2$child0.text = ("<b>" + delegate_child2$child0._get('model').name + "</b><br><br><b>" + delegate_child2$child0._get('model').compress_size + "</b> MB<br>(original: <b>" + delegate_child2$child0._get('model').original_size + "</b> MB)") }, [delegate_child2$child0._get('_delegate'),'_row'])
-//assigning anchors.margins to (10)
-			delegate_child2$child0.anchors._removeUpdater('margins'); delegate_child2$child0.anchors.margins = (10);
-//assigning horizontalAlignment to (_globals.core.Text.prototype.AlignHCenter)
-			delegate_child2$child0._removeUpdater('horizontalAlignment'); delegate_child2$child0.horizontalAlignment = (_globals.core.Text.prototype.AlignHCenter);
-//assigning wrapMode to (_globals.core.Text.prototype.WrapAnywhere)
-			delegate_child2$child0._removeUpdater('wrapMode'); delegate_child2$child0.wrapMode = (_globals.core.Text.prototype.WrapAnywhere);
-//assigning anchors.fill to (${parent})
-			delegate_child2$child0.anchors._removeUpdater('fill'); delegate_child2$child0.anchors.fill = (delegate_child2$child0.parent);
-
-
-
-
-		return delegate
-})
-		_this$child4._setId('images')
-		$this.addChild(_this$child4)
 	}
 	CompressorPrototype.$s = function($c) {
 		var $this = this;
@@ -6505,82 +7158,10 @@ var _this$child0 = new _globals.src.CompressInput($this)
 
 
 
-//setting up component Row
+//setting up component Filtres
 			var _this$child1 = $c._this$child1
 			_this$child1.$s($c.$c$_this$child1)
 			delete $c.$c$_this$child1
-
-//assigning anchors.horizontalAlignment to (${parent})
-			_this$child1.anchors._removeUpdater('horizontalAlignment'); _this$child1.anchors.horizontalAlignment = (_this$child1.parent);
-//assigning spacing to (3)
-			_this$child1._removeUpdater('spacing'); _this$child1.spacing = (3);
-//assigning isSearch to (${filterName.text} || ${filterSize.text} || ${filterDate.text})
-			_this$child1._replaceUpdater('isSearch', function() { _this$child1.isSearch = (_this$child1._get('filterName').text || _this$child1._get('filterSize').text || _this$child1._get('filterDate').text) }, [_this$child1._get('filterSize'),'text',_this$child1._get('filterName'),'text',_this$child1._get('filterDate'),'text'])
-//assigning anchors.topMargin to (30)
-			_this$child1.anchors._removeUpdater('topMargin'); _this$child1.anchors.topMargin = (30);
-//assigning anchors.top to (${inputRow.bottom})
-			_this$child1.anchors._replaceUpdater('top', function() { _this$child1.anchors.top = (_this$child1._get('inputRow').bottom) }, [_this$child1._get('inputRow'),'bottom'])
-
-//setting up component Text
-			var _this_child1$child0 = $c._this_child1$child0
-			_this_child1$child0.$s($c.$c$_this_child1$child0)
-			delete $c.$c$_this_child1$child0
-
-//assigning text to ('Search:')
-			_this_child1$child0._removeUpdater('text'); _this_child1$child0.text = ('Search:');
-
-
-//setting up component TextInputMaterial
-			var _this_child1$child1 = $c._this_child1$child1
-			_this_child1$child1.$s($c.$c$_this_child1$child1)
-			delete $c.$c$_this_child1$child1
-
-//assigning width to (250)
-			_this_child1$child1._removeUpdater('width'); _this_child1$child1.width = (250);
-			_this_child1$child1.onChanged('text', function(value) {
-	var proxyModel = this._get('proxyModel', true)
-
-                proxyModel._buildIndexMap()
-            }.bind(_this_child1$child1))
-
-
-//setting up component Text
-			var _this_child1$child2 = $c._this_child1$child2
-			_this_child1$child2.$s($c.$c$_this_child1$child2)
-			delete $c.$c$_this_child1$child2
-
-//assigning text to ('Filter by size:')
-			_this_child1$child2._removeUpdater('text'); _this_child1$child2.text = ('Filter by size:');
-
-
-//setting up component TextInputMaterial
-			var _this_child1$child3 = $c._this_child1$child3
-			_this_child1$child3.$s($c.$c$_this_child1$child3)
-			delete $c.$c$_this_child1$child3
-
-			_this_child1$child3.onChanged('text', function(value) {
-	var proxyModel = this._get('proxyModel', true)
-
-                proxyModel._buildIndexMap()
-            }.bind(_this_child1$child3))
-
-
-//setting up component Text
-			var _this_child1$child4 = $c._this_child1$child4
-			_this_child1$child4.$s($c.$c$_this_child1$child4)
-			delete $c.$c$_this_child1$child4
-
-//assigning text to ('Filter by load date:')
-			_this_child1$child4._removeUpdater('text'); _this_child1$child4.text = ('Filter by load date:');
-
-
-//setting up component TextInputMaterial
-			var _this_child1$child5 = $c._this_child1$child5
-			_this_child1$child5.$s($c.$c$_this_child1$child5)
-			delete $c.$c$_this_child1$child5
-
-//assigning enabled to (false)
-			_this_child1$child5._removeUpdater('enabled'); _this_child1$child5.enabled = (false);
 
 
 
@@ -6595,74 +7176,10 @@ var _this$child0 = new _globals.src.CompressInput($this)
 			_this$child2.anchors._replaceUpdater('top', function() { _this$child2.anchors.top = (_this$child2._get('filters').bottom) }, [_this$child2._get('filters'),'bottom'])
 
 
-//setting up component NetworkRequest
+//setting up component Gallery
 			var _this$child3 = $c._this$child3
 			_this$child3.$s($c.$c$_this$child3)
 			delete $c.$c$_this$child3
-
-//assigning url to (${webApp.serverUrl} + 'all')
-			_this$child3._replaceUpdater('url', function() { _this$child3.url = (_this$child3._get('webApp').serverUrl + 'all') }, [_this$child3._get('webApp'),'serverUrl'])
-			_this$child3.on('error', function(err) {
-	var errorRect = this._get('errorRect', true)
-
-            errorRect.visible = true
-        }.bind(_this$child3))
-			_this$child3.on('loaded', function(res) {
-	var imagesModel = this._get('imagesModel', true)
-
-            log(this.url)
-
-            let result = JSON.parse(res)
-            log(result)
-            imagesModel.append(result)
-        }.bind(_this$child3))
-
-
-//setting up component GridView
-			var _this$child4 = $c._this$child4
-			_this$child4.$s($c.$c$_this$child4)
-			delete $c.$c$_this$child4
-
-//assigning cellWidth to (200)
-			_this$child4._removeUpdater('cellWidth'); _this$child4.cellWidth = (200);
-//assigning spacing to (5)
-			_this$child4._removeUpdater('spacing'); _this$child4.spacing = (5);
-//assigning height to (${contentHeight})
-			_this$child4._replaceUpdater('height', function() { _this$child4.height = (_this$child4.contentHeight) }, [_this$child4,'contentHeight'])
-//assigning width to ((${parent.width}))
-			_this$child4._replaceUpdater('width', function() { _this$child4.width = ((_this$child4.parent.width)) }, [_this$child4.parent,'width'])
-
-//setting up component ProxyModel
-			var _this_child4$model = $c._this_child4$model
-			_this_child4$model.$s($c.$c$_this_child4$model)
-			delete $c.$c$_this_child4$model
-
-
-//setting up component ListModel
-			var _this_child4_model$target = $c._this_child4_model$target
-			_this_child4_model$target.$s($c.$c$_this_child4_model$target)
-			delete $c.$c$_this_child4_model$target
-
-			_this_child4_model$target.__complete = function() {
-	var proxyModel = this._get('proxyModel', true), imagesModel = this._get('imagesModel', true), filterName = this._get('filterName', true), imagesRequest = this._get('imagesRequest', true), filterSize = this._get('filterSize', true), model = this._get('model', true)
- _globals.core.ListModel.prototype.__complete.call(this)
-imagesRequest.send()
-                    // log('model')
-                    // imagesModel.append({'url': 'lightgreen', name: 'Some image title', compress_size: 500})
-                    // for(let i = 0; i !== 50; ++i)
-                    //     imagesModel.append({'url': 'lightgreen', name: 'NameNameNameNameNameName' + i, compress_size: 140 + i})
-                    // log(imagesModel.count)
-                    proxyModel.setFilter(item => item.name.includes(filterName.text) && item.compress_size >= filterSize.text) }.bind(_this_child4_model$target)
-
-			_this_child4$model.__complete = function() { _globals.core.ProxyModel.prototype.__complete.call(this)
- }.bind(_this_child4$model)
-
-//assigning anchors.topMargin to (20)
-			_this$child4.anchors._removeUpdater('topMargin'); _this$child4.anchors.topMargin = (20);
-//assigning anchors.top to (${filters.bottom})
-			_this$child4.anchors._replaceUpdater('top', function() { _this$child4.anchors.top = (_this$child4._get('filters').bottom) }, [_this$child4._get('filters'),'bottom'])
-//assigning cellHeight to (200)
-			_this$child4._removeUpdater('cellHeight'); _this$child4.cellHeight = (200);
 }
 
 
@@ -7259,66 +7776,37 @@ imagesRequest.send()
 	_globals.core._protoOnChanged(AnchorsPrototype, 'rightMargin', $code$0)
 	_globals.core._protoOnChanged(AnchorsPrototype, 'margin', $code$0)
 
-//=====[component controls.core.PlaceholderFont]=====================
+//=====[component core.BaseViewContent]=====================
 
-	var PlaceholderFontBaseComponent = _globals.core.Object
-	var PlaceholderFontBasePrototype = PlaceholderFontBaseComponent.prototype
+	var BaseViewContentBaseComponent = _globals.core.Item
+	var BaseViewContentBasePrototype = BaseViewContentBaseComponent.prototype
 
 /**
  * @constructor
- * @extends {_globals.core.Object}
+ * @extends {_globals.core.Item}
  */
-	var PlaceholderFontComponent = _globals.controls.core.PlaceholderFont = function(parent, row) {
-		PlaceholderFontBaseComponent.apply(this, arguments)
+	var BaseViewContentComponent = _globals.core.BaseViewContent = function(parent, row) {
+		BaseViewContentBaseComponent.apply(this, arguments)
+	//custom constructor:
+	{
+		this.style('will-change', 'scroll-position, transform, left, top')
+	}
 
 	}
-	var PlaceholderFontPrototype = PlaceholderFontComponent.prototype = Object.create(PlaceholderFontBasePrototype)
+	var BaseViewContentPrototype = BaseViewContentComponent.prototype = Object.create(BaseViewContentBasePrototype)
 
-	PlaceholderFontPrototype.constructor = PlaceholderFontComponent
+	BaseViewContentPrototype.constructor = BaseViewContentComponent
 
-	PlaceholderFontPrototype.componentName = 'controls.core.PlaceholderFont'
-	core.addProperty(PlaceholderFontPrototype, 'string', 'family')
-	core.addProperty(PlaceholderFontPrototype, 'bool', 'italic')
-	core.addProperty(PlaceholderFontPrototype, 'bool', 'bold')
-	core.addProperty(PlaceholderFontPrototype, 'bool', 'underline')
-	core.addProperty(PlaceholderFontPrototype, 'bool', 'strike')
-	core.addProperty(PlaceholderFontPrototype, 'int', 'pixelSize')
-	core.addProperty(PlaceholderFontPrototype, 'int', 'pointSize')
-	core.addProperty(PlaceholderFontPrototype, 'int', 'lineHeight')
-	core.addProperty(PlaceholderFontPrototype, 'int', 'weight')
-	PlaceholderFontPrototype.getClass = function() {
-		var cls
-		if (!this._placeholderClass) {
-			cls = this._placeholderClass = this._context.stylesheet.allocateClass('placeholderFont')
-			this.parent.parent.element.addClass(cls)
-		}
-		else
-			cls = this._placeholderClass
-		return cls
+	BaseViewContentPrototype.componentName = 'core.BaseViewContent'
+	BaseViewContentPrototype._updateScrollPositions = function(x,y,layout) {
+		this._setProperty('x', -x)
+		this._setProperty('y', -y)
+		if (layout === undefined || layout) //default true
+			this.parent._scheduleLayout()
 	}
-	PlaceholderFontPrototype.updateProperty = function(name,value) {
-		var cls = this.getClass()
-
-		//fixme: port to modernizr
-		var selectors = ['::-webkit-input-placeholder', '::-moz-placeholder', ':-moz-placeholder', ':-ms-input-placeholder']
-		selectors.forEach(function(selector) {
-			try {
-				this._context.stylesheet._addRule('.' + cls + selector, name + ':' + value)
-				log('added rule for .' + cls + selector)
-			} catch(ex) {
-				//log(ex)
-			}
-		}.bind(this))
-	}
-	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'family', function(value) { this.updateProperty('font-family', value); this.parent.parent._updateSize(); })
-	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'pointSize', function(value) { this.updateProperty('font-size', value + "pt"); this.parent.parent._updateSize(); })
-	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'pixelSize', function(value) { this.updateProperty('font-size', value + "px"); this.parent.parent._updateSize(); })
-	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'italic', function(value) { this.updateProperty('font-style', value? 'italic': 'normal'); this.parent.parent._updateSize(); })
-	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'weight', function(value) { this.updateProperty('font-weight', value); this.parent.parent._updateSize(); })
-	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'bold', function(value) { this.updateProperty('font-weight', value? 'bold': 'normal'); this.parent.parent._updateSize(); })
-	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'lineHeight', function(value) { this.updateProperty('line-height', value + "px"); this.parent.parent._updateSize(); })
-	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'strike', function(value) { this.updateProperty('text-decoration', value? 'line-through': ''); this.parent._updateSize(); })
-	_globals.core._protoOnChanged(PlaceholderFontPrototype, 'underline', function(value) { this.updateProperty('text-decoration', value? 'underline': ''); this.parent.parent._updateSize(); })
+	var $code$0 = function(value) { this.parent._scheduleLayout() }
+	_globals.core._protoOnChanged(BaseViewContentPrototype, 'x', $code$0)
+	_globals.core._protoOnChanged(BaseViewContentPrototype, 'y', $code$0)
 
 //=====[component core.RAIIEventEmitter]=====================
 
