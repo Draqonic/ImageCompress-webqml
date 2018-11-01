@@ -82,19 +82,4 @@ Grid {
             proxyModel._buildIndexMap()
         }
     }
-    
-    AbstractButton {
-        height: filterTime.height
-        text: 'Reset'
-        
-        onClicked: {
-            filterName.text = ''
-            filterSize.text = ''
-            filterDate.element.dom.value = ''
-            filterTime.element.dom.value = ''
-            filterDate.value = ''
-            filterTime.value = ''
-            proxyModel._buildIndexMap()
-        }
-    }
 }

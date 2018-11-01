@@ -20,4 +20,4 @@ You can use this option with ready data for quick testing:
 1. Execute `Back/QuickInstall/images-with-test-data.sql`.
 2. Unzip `Back/QuickInstall/images-compress-test-data.zip` to index.js dir.
 
-or just run `Back/quick-test-data-install.js`
+or just run `npm install` & `node Back/quick-test-data-install.js`
