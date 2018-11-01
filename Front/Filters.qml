@@ -6,11 +6,19 @@ Grid {
     width: 100%
     spacing: 5
     property bool isSearch: filterName.text || filterSize.text || filterDate.value || filterTime.value
-    
+    property string filterDateTime
+
+    function resetDate() {
+        if (!filterDate.value) filters.filterDateTime = ''
+        let searchDate = filterDate.value
+        let searchTime = filterTime.value ? filterTime.value : '00:00'
+        filters.filterDateTime = searchDate + ' ' + searchTime
+    }
+
     Text {
         text: 'Search:'
     }
-    
+
     TextInputMaterial {
         id: filterName
         width: 250
@@ -19,11 +27,11 @@ Grid {
             proxyModel._buildIndexMap()
         }
     }
-    
+
     Text {
         text: 'Size (MB):'
     }
-    
+
     TextInputMaterial {
         id: filterSize
         onTextChanged: {
@@ -40,20 +48,11 @@ Grid {
             proxyModel._buildIndexMap()
         }
     }
-    
+
     Text {
         text: 'Load time:'
     }
-    
-    property string filterDateTime
-    
-    function resetDate() {
-        if (!filterDate.value) filters.filterDateTime = ''
-        let searchDate = filterDate.value
-        let searchTime = filterTime.value ? filterTime.value : '00:00'
-        filters.filterDateTime = searchDate + ' ' + searchTime
-    }
-    
+
     DateInput {
         id: filterDate
         
@@ -62,7 +61,7 @@ Grid {
             proxyModel._buildIndexMap()
         }
     }
-    
+
     TimeInput {
         id: filterTime
         enabled: filterDate.value
