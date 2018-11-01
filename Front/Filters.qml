@@ -21,7 +21,7 @@ Grid {
     }
     
     Text {
-        text: 'Filter by size (MB):'
+        text: 'Size (MB):'
     }
     
     TextInputMaterial {
@@ -30,9 +30,19 @@ Grid {
             proxyModel._buildIndexMap()
         }
     }
+
+    AbstractButton {
+        height: filterTime.height
+        text: !proxyModel.descSize ? 'Larger' : 'Less'
+
+        onClicked: {
+            proxyModel.descSize = !proxyModel.descSize
+            proxyModel._buildIndexMap()
+        }
+    }
     
     Text {
-        text: 'Filter by load date:'
+        text: 'Load time:'
     }
     
     property string filterDateTime
@@ -59,6 +69,16 @@ Grid {
         
         onValueChanged: {
             filters.resetDate()
+            proxyModel._buildIndexMap()
+        }
+    }
+
+    AbstractButton {
+        height: filterTime.height
+        text: !proxyModel.descTime ? 'Later' : 'Earlier'
+
+        onClicked: {
+            proxyModel.descTime = !proxyModel.descTime
             proxyModel._buildIndexMap()
         }
     }

@@ -90,13 +90,19 @@ GridView {
 
     model: ProxyModel {
         id: proxyModel
+		property bool descSize;
+		property bool descTime;
+		
         target: ListModel {
             id: imagesModel
             onCompleted: {
                 imagesRequest.send()
                 proxyModel.setFilter(function(item) {
                     return item.name.toUpperCase().includes(filterName.text.toUpperCase()) &&
-                           item.compress_size >= filterSize.text && item.time >= filters.filterDateTime
+                           (proxyModel.descSize ? item.compress_size <= filterSize.text :
+                                                  item.compress_size >= filterSize.text) &&
+                           (proxyModel.descTime ? item.time <= filters.filterDateTime :
+						                          item.time >= filters.filterDateTime)
                 })
             }
         }
