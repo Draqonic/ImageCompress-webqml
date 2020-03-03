@@ -1,6 +1,4 @@
 # Image Compress
-## Demonstration
-You can check the application in action [here](https://dny.pp.ua/compress/).
 
 ## Requirements
 * Node.js (tested on 10.13.0 LTS)
